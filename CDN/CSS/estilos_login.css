@@ -1,0 +1,41 @@
+body{
+	overflow: hidden !important;
+	overflow: hidden !important;
+}
+.enlace{
+	text-decoration: none;
+}
+.principal{
+	background-image: url("http://localhost/territoriosCodeigniter/CDN/images/fotografialogin.jpg");
+	background-size:cover;            
+	background-position:center;      
+	background-color:rgb(8, 109, 120);
+	background-blend-mode:  soft-light;
+	overflow: hidden;
+}
+.divlogin{
+	background-color: #fff;
+	margin-top: 10px;
+	margin-bottom: 500px;
+	padding: 30px;
+	border-radius: 5px;
+ 	overflow: hidden;
+}
+.crearcuenta{
+	font-size: 13px;
+	color:#007bff;
+	cursor: pointer;
+}
+.divcuenta{
+	margin-top:10px;
+}
+.divnube{
+	margin-top: 80px;
+}
+.divnube i{
+	font-size: 200px;
+	color:rgba(237, 249, 250,0.6);
+}
+.divnube h4{
+	color:rgba(237, 249, 250,0.6);
+}

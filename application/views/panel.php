@@ -87,8 +87,8 @@
 					</div>
 				</div>
 				<div class="row conteprincipal">
-					<h4>PROBANDO</h4>
-					<canvas id="myChart"></canvas>
+					<?php echo $contenido; ?>
+					<!--<canvas id="myChart"></canvas>
 	<script>
 		data = {
     datasets: [{
@@ -110,7 +110,7 @@
 		    data: data,
 		    options:{}
 		});
-	</script>
+	</script>-->
 				</div>
 			</div>
 		</div>
