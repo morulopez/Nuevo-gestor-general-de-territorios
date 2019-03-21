@@ -1,0 +1,87 @@
+
+/*****ESTILOS DEL PANEL DE CONTROL****/
+
+body{
+	font-family: sans-serif;
+	background-color: #c0c7d3;
+}
+.principal{
+	position: relative;
+}
+.sidebar{
+	background-color:#a500f2;
+	margin-bottom: -100000px;
+ 	padding-bottom: 100000px;
+ 	overflow: hidden;
+ 	color:#fff;
+}
+.sidebarli{
+	list-style: none;
+	margin-top: 100px;
+	width: 100%;
+}
+.sidebarli li{
+	margin-bottom: 20px;
+}
+.sidebarli li i{
+	margin-right: 20px;
+}
+.navegador{
+	background-color: #fff !important;
+	color:#343235 !important;
+}
+.navegador form{
+	margin-top: 10px;
+	margin-right: 20px;
+}
+.navegador form button{
+	background-color: #fff;
+	border: 1px solid #a500f2;
+	color:#a500f2;
+}
+.navegador form button:hover{
+	background-color: #a500f2;
+	border: 1px solid #a500f2;
+	color:#fff;
+}
+
+.carga{
+	background-color: red;
+}
+.ale{
+	color:red;
+}
+.divcongre{
+	margin-top: 20px;
+	margin-left: 10px;
+}
+.spancongre{
+	background-color: #7f28a8;
+	padding:10px;
+	border-radius: 6px;
+	font-size: 12px;
+}
+.conteprincipal{
+	background-color: #e6e8ed;
+	margin-bottom: -100000px;
+ 	padding-bottom: 100000px;
+ 	overflow: hidden;
+}
+
+.infousuario{
+	background-color: #edeff2;
+}
+.soporte{
+	font-size: 10px;
+	cursor: pointer;
+	margin-right: 5px;
+}
+.cerrarsesion{
+	color:#a500f2;
+}
+.usermenu{
+	padding-top: 10px;
+}
+.usermenu i{
+	margin-right: 10px;
+}
