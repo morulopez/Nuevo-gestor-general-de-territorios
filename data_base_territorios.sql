@@ -22,6 +22,14 @@ activo 				TINYINT(1) DEFAULT '0' NOT NULL,
 FOREIGN KEY (ID_congregacion) REFERENCES congregaciones(ID) ON DELETE CASCADE
 );
 
+CREATE TABLE seguridad_validacion(
+ID                  INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_administrador    INT(10) NOT NULL,
+claveaut            varchar(60) NOT NULL,
+FOREIGN KEY (ID_administrador) REFERENCES administrador(ID) ON DELETE CASCADE
+);
+
+
 CREATE TABLE publicadores(
 ID 					INT(30) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ID_congregacion 	INT(10) NOT NULL,
@@ -58,7 +66,7 @@ CREATE TABLE observaciones(
 ID 					INT(40) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ID_territorio 		INT(30) NOT NULL,
 observacion 		VARCHAR(2000),
-creado 				DATETIME (CURRENT_TIMESTAMP),
+creado 				DATETIME,
 FOREIGN KEY (ID_territorio) REFERENCES territorios(ID) ON DELETE CASCADE
 );
 
@@ -66,7 +74,7 @@ CREATE TABLE historial(
 ID 					INT(60) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ID_territorio 		INT(30) NOT NULL,
 obser_historial 	VARCHAR(2000),
-creado 				DATETIME CURRENT_TIMESTAMP,
+creado 				DATETIME,
 FOREIGN KEY (ID_territorio) REFERENCES territorios(ID) ON DELETE CASCADE
 );
 

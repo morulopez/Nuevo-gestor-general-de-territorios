@@ -12,8 +12,15 @@
 	<script src="<?php echo CDN;?>/bootstrap/js/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="<?php echo CDN;?>/bootstrap/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<!--LIBRERIA FONTAWESOME-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<!--sweetalert2-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </head>
 <body>
+	<script>
+		let Logueo = new login("<?php echo URL ?>");
+	</script>
 	<div class="container-fluid principal">
 		<div class="row">
 						<div class="col-md-4">
@@ -52,7 +59,7 @@
 								        </button>
 								      </div>
 								      <div class="modal-body">
-								        <form id="myForm" name="myForm" onsubmit="Logueo.secret_key()">
+								        <form>
 								          <div class="form-group">
 								            <label for="recipient-name"  class="col-form-label">Contraseña:</label>
 								            <input type="text" class="form-control" id="recipient-name" name="clave">
@@ -60,11 +67,12 @@
 								      </div>
 								      <div class="modal-footer">
 								      	<!-- con esta funcion de javascript accedemos a nuestra carpeta personal de JS y mediante fetch confirmaremos la clave secreta-->
-								        <button type="submit" class="btn btn-primary">Enviar</button>
+								      	 <div class="row">
+								        	<div class="col-md-12" id="divcarga">
+								        	</div>
+								        </div>
+								        <button type="button" class="btn btn-primary" onclick="Logueo.secret_key()">Enviar</button>
 								        </form>
-								      </div>
-								      <div id="prueba">
-
 								      </div>
 								    </div>
 								  </div>
@@ -79,6 +87,7 @@
 
 </body>
 </html>
+
 
 
 

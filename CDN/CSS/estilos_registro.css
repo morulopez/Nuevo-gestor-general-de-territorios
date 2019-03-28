@@ -1,0 +1,67 @@
+
+.principal{
+	background-image: url("http://localhost/territoriosCodeigniter/CDN/images/fotoregistro.jpg");
+	background-size:cover;            
+	background-position:center;      
+	background-color:rgb(46,139,87);
+	background-blend-mode:  soft-light;
+	overflow: hidden;
+}
+.divformulario{
+	color: rgba(237, 249, 250,1);
+	margin-top: 20px;
+	margin-bottom: 30px;
+	background-color: rgba(57, 54, 79,0.5);
+	text-shadow: 1px 1px rgba(237, 249, 250,1);
+	padding: 40px;
+	border-radius: 5px;
+}
+.iconoregistro i {
+	font-size: 100px;
+	margin-top: 40px;
+	color: rgba(57, 54, 79,0.7);
+}
+
+.iconoregistro h5{
+	font-size: 40px;
+	color: rgba(237, 249, 250,1);
+}
+
+.botonregistro{
+	background-color: rgb(197, 30, 88,0.5);
+	color:#fff;
+	border:1px solid rgb(197, 30, 88,0.5);
+	padding: 5px;
+	border-radius: 4px;
+}
+.botonregistro:hover{
+	background-color: rgb(252, 252, 253,0.5);
+	color:#47002f;
+	border:1px solid rgb(252, 252, 253,0.5);
+	padding: 5px;
+	border-radius: 4px;
+}
+.passvalid{
+	background-color:rgba(40,167,69,0.6);
+	padding:8px;
+	border-radius: 5px;
+	display: none;
+	margin-top: 5px;
+}
+.passinvalid{
+	margin-top: 5px;
+	background-color: rgba(220,53,69,0.6);
+	padding:8px;
+	border-radius: 5px;
+	display: none;
+}
+
+.enlace{
+	text-decoration: none;
+	color: rgba(237, 249, 250,1);
+}
+
+.enlace:hover{
+	text-decoration: none;
+	color: rgba(237, 249, 250,1);
+}

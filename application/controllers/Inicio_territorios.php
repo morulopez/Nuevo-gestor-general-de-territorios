@@ -9,8 +9,15 @@ class Inicio_territorios extends CI_Controller {
 
 	}
 	function Inicio(){
+		$this->load->view("panel.php");
+	}
+
+	function Login(){
 		$this->load->view("login.php");
-		/*$this->load->view("panel.php");*/
+	}
+
+	function pagina_registro(){
+		$this->load->view("registro.php");
 	}
 }
 
