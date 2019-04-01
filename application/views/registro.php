@@ -23,17 +23,24 @@
 	</script>
 	<div class="container-fluid principal">
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-2">
 			</div>
-			<div class="col-md-4 text-center iconoregistro">
+			<div class="col-md-4 divlogoregistro">
+				<div class="col-md-12 text-center iconoregistro">
 				<i class="fas fa-edit"></i>
 				<h5>Pagina de registro</h5>
+				<p>Bienvenido al gestor de territorios para el ministerio.
+				Rellena todos los campos correctamente por favor y valida tu cuenta con el email que te enviaremos.</p>
+				<div class="row">
+					<div class="col-md-1">
+					</div>
+					<div class="col-md-10 divfotoregistro">
+						<img src="<?php echo CDN;?>/images/imagen_registro2.png" class="animated fadeIn"/>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4">
 			</div>
-			<div class="col-md-4 divformulario">
+			<div class="col-md-4 divformulario fo">
 				<form class="needs-validation" novalidate>
 				   <div class="form-row">
 				    <div class="col-md-12">
@@ -98,18 +105,18 @@
 				    </div>
 				  </div>
 				  <br>
+				  </form>
 				  <div class="row">
 					  <div class="col-md-6">
-					  	<!--<button class="botonregistro" type="submit" onclick="Registro.Validar()">Guardar y registrarse</button>-->
+					  	<button class="botonregistro" id="botondatos" onclick="Registro.Validar()">Guardar y registrarse</button>
 					  	<div id="divcarga">
 					  	</div>
 					  </div>
 					  <div class="col-md-6 text-right">
-					  	<a href="<?php echo site_url('Inicio_territorios/Login')?>" class="enlace"><span>Volver al login</span></a>
+					  	<a href="<?php echo site_url('login')?>" class="enlace"><span>Volver al login</span></a>
 					  </div>
 				  </div>
-				</form>
-				<button onclick="Registro.register_User()">alternativo</button>
+				<!--<button onclick="Registro.register_User()">alternativo</button>-->
 			</div>
 		</div>
 </div>

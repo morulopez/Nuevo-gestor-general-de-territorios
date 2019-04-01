@@ -29,26 +29,83 @@ class Myphpmailer {
 										<meta charset="utf-8">
 									    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 										<title>Confrimaciondecuenta</title>
-										<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+										<style>
+										.botonemail{
+											padding:10px;
+											background-color: #fff;
+											border: 1px solid #a500f2;
+											color:#a500f2;
+											cursor: pointer;
+											padding: 5px;
+											border-radius:5px;
+										}
+										.botonemail:hover{
+											background-color:#a500f2;
+											color:#fff;
+											border: 1px solid #a500f2;
+										}
+										.general{
+											display:flex;
+											margin:50px;
+										}
+										.izq{
+											padding:10px;
+											width:40%;
+											background-color:#fcfdff;
+											height:400px;
+										}
+										.titulo{
+											text-align:center;
+											margin-top: 20px;
+										}
+										.parrafo{
+											margin-top: 60px;
+										}
+										.boton{
+											text-align:center;
+											margin-top: 40px;
+										}
+										.der{
+											width:40%;
+											background-image: url("http://localhost/territoriosCodeigniter/CDN/images/imagen_correo.jpg");
+											background-size:cover;            
+											background-position:center;      
+											background-blend-mode:  soft-light;
+											overflow: hidden;
+											height:400px;
+										}
+										h3{
+											color:#123e84;
+										}
+
+										</style>
 									</head>
 									<body>
-										<div class="row">
-										<div class="col-md-4">
-										</div>
-										<div class="col-md-4">
-											<h3>Gracias por subscribirte y bienvenido!</h3>
-											<p>Hola '.ucwords($nombre).' '.ucwords($apellidos).'.
-											Te has registrado como administrador de la congregacion <strong>'.ucwords($congregacion).'</strong>
-											Activa tu cuenta para poder utilizar el programa.</p>
-											<a href="http://localhost/territoriosCodeigniter/index.php/Inicio_territorios/activacion?data="'.$nombre.'"-"'.$id_usuario.'"-"'.$congregacion.'"><button type="button" class="botonemail">Activar</button></a>
-										</div>
+										<div class="general">
+											<div class="izq">
+											    <div class="titulo">
+													<h3>Gracias por subscribirte y bienvenido!</h3>
+												</div>
+												<div class="parrafo">
+													<p>Hola '.ucwords($nombre).' '.ucwords($apellidos).'.
+													Te has registrado como administrador de la congregacion <strong>'.ucwords($congregacion).'</strong>.<br>
+													Espero que disfrutes de este software y le saques el maximo partido.
+													Activa tu cuenta para poder utilizar el programa.
+													</p>
+												</div>
+												<div class="boton">
+													<a href="'.site_url("Inicio_territorios/activacion/".$nombre."-".$id_usuario."-".$congregacion).'"><button type="button" class="botonemail">Activar</button></a>
+												</div>
+											</div>
+											<div class="der">
+											</div>
 										</div>
 									</body>
 								</html>';
 		    $mail->AltBody   = 'Gracias por subscribirte
 										Bienvenido '.ucwords($nombre).' '.ucwords($apellidos).'.
 										Te has registrado como administrador de la congregación <strong>'.ucwords($congregacion).'</strong>
-										Activa tu cuenta para poder utilizar el programa.<a href="http://localhost/territoriosCodeigniter/index.php/Inicio_territorios/activacion?data="'.$nombre.'"-"'.$id_usuario.'"-"'.$congregacion.'">Pulsar</a>';
+										Activa tu cuenta para poder utilizar el programa.<a href="'.site_url("Inicio_territorios/activacion/".$nombre."-".$id_usuario."-".$congregacion).'">Pulsar</a>';
 
 		    $mail->send();
 		    return true;

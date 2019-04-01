@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
 define("CDN","http://localhost/territoriosCodeigniter/CDN");
-define("URL","http://localhost/territoriosCodeigniter/index.php");
+define("URL","http://localhost/territoriosCodeigniter");
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes

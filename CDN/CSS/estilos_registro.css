@@ -9,8 +9,8 @@
 }
 .divformulario{
 	color: rgba(237, 249, 250,1);
-	margin-top: 20px;
-	margin-bottom: 30px;
+	margin-top: 150px;
+	margin-bottom: 130px;
 	background-color: rgba(57, 54, 79,0.5);
 	text-shadow: 1px 1px rgba(237, 249, 250,1);
 	padding: 40px;
@@ -24,7 +24,7 @@
 
 .iconoregistro h5{
 	font-size: 40px;
-	color: rgba(237, 249, 250,1);
+	color: rgba(57, 54, 79,0.7);
 }
 
 .botonregistro{
@@ -64,4 +64,39 @@
 .enlace:hover{
 	text-decoration: none;
 	color: rgba(237, 249, 250,1);
+}
+.divlogoregistro{
+	background-color: rgba(255,255,255,0.9);
+	margin-top: 150px;
+	border-radius: 5px;
+	margin-bottom: 130px;
+}
+
+.divfotoregistro{
+	margin-top: 50px;
+}
+
+.divfotoregistro img{
+	width:100%;
+	border-radius: 3px;
+	-webkit-box-shadow: 8px 8px 14px #999;
+  	-moz-box-shadow: 8px 8px 14px #999;
+  	filter: shadow(color=#999999, direction=135, strength=2);
+  	-webkit-animation-duration: 10s;
+    animation-duration: 10s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+    }
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
 }

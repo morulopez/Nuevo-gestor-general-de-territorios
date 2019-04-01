@@ -11,7 +11,16 @@ class login{
      }
         elemento.innerHTML = "";
   }
-
+   mostrarpass(){
+      if(document.getElementById('recipient-name').type == 'password'){
+        document.getElementById('recipient-name').type  = 'text';
+        document.getElementById('ver_pass').innerHTML   = 'Ocultar contraseña';
+        return
+      }
+      
+      document.getElementById('recipient-name').type  = 'password';
+      document.getElementById('ver_pass').innerHTML   = 'Ver contraseña';
+   }
   /*ANTES DE PROCEDER AL REGISTRO TENEMOS QUE VERIFICAR SI LA CLAVE SECRETA DE INVITACION ES CORRECTA*/
   secret_key(){
     let key = document.getElementsByName('clave')[0].value;
@@ -38,7 +47,7 @@ class login{
             title: 'Clave correcta',
             text: 'La clave es correcta',
           })
-         return setTimeout(()=> window.location = `${this.url}/Inicio_territorios/pagina_registro`, 2000);
+         return setTimeout(()=> window.location = `${this.url}/registrarse`, 2000);
         }
         Swal.fire({
             type: 'error',
@@ -52,7 +61,45 @@ class login{
   }
 
   login_User(){
-
+    let obj={usuario:document.getElementById('exampleInputEmail1').value,
+             password:document.getElementById('exampleInputPassword1').value
+            }
+    this.cargando = true;
+    if(this.cargando){
+      this.function_Cargando(document.getElementById('divcargalogin'));
+    }
+    fetch(`${this.url}/Login_register/login?delay=4`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then( res => {
+      res.json().then( data => {
+        this.cargando = false;
+        this.function_Cargando(document.getElementById('divcargalogin'));
+        if(data === 'Necesitas activar tu cuenta, vaya a su correo electronico y compruebe el correo que le enviamos para activar su cuenta'){
+          return Swal.fire({
+            type: 'info',
+            title: 'Necesitas activar tu cuenta',
+            text: 'Necesitas activar tu cuenta, vaya a su correo electronico y compruebe el correo que le enviamos para activar su cuenta',
+          });
+        }
+        if(data === false ){
+          return Swal.fire({
+            type: 'error',
+            title: 'Error al ingresar su Usuario o email',
+          });
+        }
+         Swal.fire({
+            type: 'success',
+            title: 'Acceso correcto',
+            text: 'La clave es correcta',
+          })
+         return setTimeout(()=> window.location = `${this.url}`, 2000);
+      });
+    });
   }
 
   register_User(){
@@ -60,7 +107,9 @@ class login{
     var forms = document.getElementsByClassName('needs-validation');
     let key = ["nombrecongregacion","provincia","localidad","nombreadministrador","apellidos","nombreusuario","email","password","passwordvalidatte"];
     let obj = {};
+    let valido = true;
     for(var i=0; i< forms[0].length;i++){
+
       obj[key[i]] = document.getElementById(forms[0][i]['id']).value;
     }
     this.cargando = true;
@@ -92,7 +141,7 @@ class login{
             type: 'success',
             title: 'Usuario creado correctamente',
             text: 'Hemos enviado un correo a su email para validar su cuenta, por favor vaya y valide su cuenta',
-          }).then( ()=> window.location = `${this.url}/Inicio_territorios/Login`);
+          }).then( ()=> window.location = `${this.url}/login`);
       });
     }).catch(error => {console.log(error)});
     
@@ -102,13 +151,11 @@ class login{
   /***funcion para validar el formulario de registro
       Si el formulario es valido llamamos a la funcion registro para almacenar los datos
   **/
-  Validar() {
-    'use strict';
-      
+  Validar() { 
       var forms = document.getElementsByClassName('needs-validation');
-      
+      var boton = document.getElementById('botondatos');
       var validation = Array.prototype.filter.call(forms, function(form) {
-        form.addEventListener('click', function(event) {
+        boton.addEventListener('click', function(event) {
           if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -116,18 +163,14 @@ class login{
           form.classList.add('was-validated');
           /*Comparo las dos contraseñas si no estan vacias y coinciden y todos los inputs estan rellenos
            llamamos a la funcion registrar para almacenar los datos*/
-
-          let pass1 = document.getElementById('validationCustom07').value;
-          let pass2 = document.getElementById('validationCustom08').value;
-          if(form.checkValidity()!= false){
-            if( pass1!='' && pass2!='' && pass1 === pass2){
-            console.log('listo para almacenar datos');
-            }
-
-          }
         }, false);
       });
-  };
+      let pass1 = document.getElementById('validationCustom07').value;
+      let pass2 = document.getElementById('validationCustom08').value;
+      if( pass1!='' && pass2!='' && pass1 === pass2){
+          this.register_User();
+      }
+  }
 
    /**Funcion para controlar el password del registro osea comparar que las contraseñas **/
   controlPass(){

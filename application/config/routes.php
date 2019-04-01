@@ -51,4 +51,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'Inicio_territorios/Inicio';
 $route['404_override'] = '';
+$route['registrarse'] ='Inicio_territorios/pagina_registro';
+$route['login'] ='Inicio_territorios/login';
 $route['translate_uri_dashes'] = FALSE;

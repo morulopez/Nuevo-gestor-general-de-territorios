@@ -37,7 +37,7 @@
 				<form>
 					 <div class="form-group">
 					    <label for="exampleInputEmail1">Usuario</label>
-					    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Usuario">
+					    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Usuario">
 					</div>
 					<div class="form-group">
 					    <label for="exampleInputPassword1">Contraseña</label>
@@ -45,7 +45,9 @@
 					</div>
 					<div class="row">
 					  	<div class="col-md-3">
-					  		<button type="submit" class="btn btn-primary">Acceder</button>
+					  		<div id="divcargalogin">
+					  		</div>
+					  		<button type="button" class="btn btn-primary" onclick="Logueo.login_User()">Acceder</button>
 					    </div>
 					    <div class="col-md-9 text-right">
 					  		<div class="divcuenta"><span class="crearcuenta" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap"><i class="fas fa-user"></i>  Crear una cuenta</span>
@@ -62,11 +64,13 @@
 								        <form>
 								          <div class="form-group">
 								            <label for="recipient-name"  class="col-form-label">Contraseña:</label>
-								            <input type="text" class="form-control" id="recipient-name" name="clave">
+								            <input type="password" class="form-control" id="recipient-name" name="clave">
+								            <input type="checkbox" id="check_pass" name="checkpass" onclick='Logueo.mostrarpass();'>
+								            <label for="check_pass"  class="col-form-label" id="ver_pass"> Ver contraseña</label>
 								          </div>
 								      </div>
 								      <div class="modal-footer">
-								      	<!-- con esta funcion de javascript accedemos a nuestra carpeta personal de JS y mediante fetch confirmaremos la clave secreta-->
+								      	<!-- con esta funcion de javascript accedemos a nuestra carpeta/archivo personal de JS y mediante fetch confirmaremos la clave secreta-->
 								      	 <div class="row">
 								        	<div class="col-md-12" id="divcarga">
 								        	</div>

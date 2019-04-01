@@ -3,40 +3,71 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login_model extends CI_Model{
 
-	/**Con esta funcion comprobamos si obtienen la clave de invitacio, si es correcta pueden continuar con el proceso de registro, si no sera rechazado ese proceso esta funcion se llama desde el controlador Login_register->comprobarKey()**/
+	/**Con esta funcion comprobamos si obtienen la clave de invitacion, si es correcta pueden continuar con el proceso de registro, si no sera rechazado ese proceso esta funcion se llama desde el controlador Login_register->comprobarKey()**/
 		public function secret_key($key){
-
 			$clave = $this->db->select("*")->get("secret_key");
 			$clave = $clave->row_array();
-			if(password_verify($key,$clave["secret_key"])){
+			$this->load->library('Encrypt_object');
+			if($valid = $this->encrypt_object->validar_password($key,$clave["secret_key"])){
 				return true;
 			}
 			return false;
 		}
-		/***funcion para registrar al administrador y congregacion esta funcion se llama desde el controlador login_register->registro()***/
+
+		public function login($usuario,$password){
+			$User_data = $this->db->select('ID,ID_congregacion,nombre,password,email,activo')->where('nombre_usuario',$usuario)->or_where('email',$usuario)->get('administrador');
+			if($User_data->num_rows()>0){
+				$User_data = $User_data->row_array();
+				$this->load->library('Encrypt_object');
+				$acceso = $this->encrypt_object->validar_password($password,$User_data['password']);
+				if($acceso){
+					if($User_data['activo']){
+						return $User_data;
+					}else{
+						return 'Necesitas activar tu cuenta, vaya a su correo electronico y compruebe el correo que le enviamos para activar su cuenta';
+					} 
+				}
+				return false;
+			}
+			return false;
+		}
+
+		/***funcion para registrar al administrador y congregacion, esta funcion se llama desde el controlador login_register->registro()***/
 		public function register($object,$pass){
 
 			$datos_array = (array) $object;
 			/**validamos si los datos estan rellenos o son nulos**/
+
 			foreach ($datos_array as $datos) {
 				if(!$datos || $datos ===''){
 					return false;
 				}
 
 			}
+			/*si estan rellenos procedemos a a ingresar los datos en la base de datos*/
+			/*comprobamos si existe email o usuario*/
+
 			$comprovarexiste = $this->db->select('nombre_usuario','email')->where('nombre',$datos_array["nombreusuario"])->or_where('email',$datos_array["email"])->get('administrador');
 			if($comprovarexiste->num_rows()>0){
 				return $existe = 'El usuario o email ya existe por favor escoja otro';
 			}
+			/*si no existe email o usuario procedemos a ingresar en la base de datos*/
+
 			$array_insert_congregacion = [
 				"nombre"    => $datos_array['nombrecongregacion'],
 				"provincia" => $datos_array['provincia'],
 				"localidad" => $datos_array['localidad'],
 			];
+
 			$datos = $this->db->insert('congregaciones',$array_insert_congregacion);
-				$conseguir_id_congregacion = $this->db->select('id')->order_by('id')->limit(1)->get('congregaciones');
-				$conseguir_id_congregacion = $conseguir_id_congregacion->row_array();
-				$array_insert_administrador = [
+
+			/**recogemos el ultimo dato ingresado de la congregacion**/
+			$conseguir_id_congregacion = $this->db->select('id')->order_by('id')->limit(1)->get('congregaciones');
+			$conseguir_id_congregacion = $conseguir_id_congregacion->row_array();
+
+			/*ingresamos los datos del usuario con el id_congregacion*/
+
+			$array_insert_administrador = [
 				"ID_congregacion"    => $conseguir_id_congregacion['id'],
 				"nombre"             => $datos_array['nombreadministrador'],
 				"apellidos"          => $datos_array['apellidos'],
@@ -44,20 +75,42 @@ class Login_model extends CI_Model{
 				"email"              => $datos_array['email'],
 				"password"			 => $pass
 				];
-				$this->db->insert('administrador',$array_insert_administrador);
-				$datos_user = $this->db->select('administrador.id,administrador.nombre,administrador.apellidos,administrador.email,congregaciones.nombre as nombre_congregacion')
+			$this->db->insert('administrador',$array_insert_administrador);
+
+			/*ingresamos a este administrador en la tabla publicadores ya ue es un publicador mas*/
+			$admin_publicador = [
+				"ID_congregacion"    => $conseguir_id_congregacion['id'],
+				"nombre"             => $datos_array['nombreadministrador'],
+				"apellidos"          => $datos_array['apellidos'],
+				"email"              => $datos_array['email'],
+			];
+			$this->db->insert('publicadores',$admin_publicador);
+
+			/**Ahora seleccionamos los datos del usuario que hemos ingresado con un left join para sacar el nombre de la congregacion**/
+			$datos_user = $this->db->select('administrador.id,administrador.nombre,administrador.apellidos,administrador.email,congregaciones.nombre as nombre_congregacion')
 				   ->join('congregaciones', 'congregaciones.ID = administrador.ID_congregacion','left')->order_by('id')->limit(1)->get('administrador');
-				$datos_user = $datos_user->row_array();
-				$this->load->library('Encrypt_object');
-				$claveseguraencryp = $this->encrypt_object->encrypt_clave_validar($datos_user['nombre'],$datos_user['id'],$datos_user['nombre_congregacion']);
-				$arra_clavesegura = [
-					'ID_administrador' => $datos_user['id'],
-					'claveaut'         => $claveseguraencryp
+			$datos_user = $datos_user->row_array();
+			/**llamamos a la libreria de encryptacion y encriptamos la password de seguridad de validacion y procedemos a insertarla en la base de datos**/
+			$this->load->library('Encrypt_object');
+			$claveseguraencryp = $this->encrypt_object->encrypt_clave_validar($datos_user['nombre'],$datos_user['id'],$datos_user['nombre_congregacion']);
+			$arra_clavesegura = [
+				'ID_administrador' => $datos_user['id'],
+				'claveaut'         => $claveseguraencryp
 				];
-				$this->db->insert('seguridad_validacion',$arra_clavesegura);
+			$this->db->insert('seguridad_validacion',$arra_clavesegura);
 
-				return $datos_user;
+			return $datos_user;
 
+		}
+		public function activate_account($key,$ID_admin){
+			$select_key = $this->db->select('claveaut')->where('ID_administrador',$ID_admin)->get('seguridad_validacion');
+			$select_key = $select_key->row_array();
+			$this->load->library('Encrypt_object');
+			if($this->encrypt_object->validar_password($key."jd1714hc1712.",$select_key['claveaut'])){
+				$activar = $this->db->set('activo',1)->where('ID',$ID_admin)->update('administrador');
+				return true;
+			}
+			return false;
 		}
 
 }
