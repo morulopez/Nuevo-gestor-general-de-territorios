@@ -8,7 +8,10 @@ class Inicio_territorios extends CI_Controller {
 
 	}
 	function Inicio(){
-		$this->load->view("panel.php");
+		$html=$this->load->view("theme/mi_perfil.php",["id" => $this->session->userdata['id'],],true);
+		$this->load->view("panel.php",["nombre_usuario" => $this->session->userdata['nombre'],
+	                                   "congregacion"   => $this->session->userdata['nombre_congregacion'],
+	                                   "contenido"      => $html]);
 	}
 
 	function Login(){

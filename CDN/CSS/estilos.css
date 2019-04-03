@@ -18,7 +18,8 @@ body{
 .sidebarli{
 	list-style: none;
 	margin-top: 100px;
-	width: 100%;
+	width:      100%;
+	color:      #efb8e6;
 }
 .sidebarli li{
 	margin-bottom: 20px;
@@ -47,9 +48,6 @@ body{
 
 .carga{
 	background-color: red;
-}
-.ale{
-	color:red;
 }
 .divcongre{
 	margin-top: 20px;
@@ -85,3 +83,22 @@ body{
 .usermenu i{
 	margin-right: 10px;
 }
+
+.nombreuser{
+	color:#a500f2;
+}
+.h3perfil{
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+.listaperfil{
+    -webkit-box-shadow: 8px 8px 14px #999;
+  	-moz-box-shadow: 8px 8px 14px #999;
+  	filter: shadow(color=#999999, direction=135, strength=2);
+ }
+
+ .datos{
+ 	background-color: rgba(0,0,255,0.1);
+ 	padding: 5px;
+ 	border-radius: 5px;
+ }

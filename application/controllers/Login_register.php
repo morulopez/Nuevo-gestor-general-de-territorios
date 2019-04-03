@@ -34,11 +34,12 @@ class Login_register extends CI_Controller {
 			$this->load->library('Sesion_token');
 			$jwt = $this->sesion_token->make_sesion_token();
 			$array_sesion_token = [
-				"token"           => $jwt,
-				"id"              => $validacion['ID'],
-				"id_congregacion" => $validacion['ID_congregacion'],
-				"nombre"          => $validacion['nombre'],
-				"email"           => $validacion['email']
+				"token"           	  => $jwt,
+				"id"                  => $validacion['ID'],
+				"id_congregacion"     => $validacion['ID_congregacion'],
+				"nombre"              => $validacion['nombre'],
+				"nombre_congregacion" => $validacion['nombre_congregacion'],
+				"email"               => $validacion['email']
 			];
 			$this->session->set_userdata($array_sesion_token);
 			echo json_encode($validacion);

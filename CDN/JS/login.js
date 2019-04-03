@@ -191,5 +191,24 @@ class login{
     
 }
 
+/*** Objeto datos usuario,territorios publicadores etc con este objeto obtenemos los datos ***/
 
+class dataUser{
+  constructor(url){
+    this.url      = url;
+  }
+  dataUserAdmin(id){
+    let obj = {"id": id};
+    fetch(`${this.url}/Publicadores/datos_admin`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then( data => {
+      data.json().then(datos => document.getElementById('listdata').innerHTML=`<ul class="list-group listaperfil"><li class="list-group-item"><div class="row"><div class="col-md-4">Nombre:</div><div class="col-md-4 datos">${datos.nombre}</div></div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Apellidos:</div><div class="col-md-4 datos">${datos.apellidos}</div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Email:</div><div class="col-md-4 datos">${datos.email}</div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Nombre Congregación:</div> <div class="col-md-4 datos">${datos.nombre_congregacion}</div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Provincia:</div>        <div class="col-md-4 datos">${datos.provincia}</div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Localidad:</div>        <div class="col-md-4 datos">${datos.localidad}</div></li></ul>`);
+    });
+  }
+}
 

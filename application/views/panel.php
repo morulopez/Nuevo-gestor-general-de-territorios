@@ -6,6 +6,7 @@
 	<title>Gestion de territorios</title>
 	<!--MIS ESTILOS-->
 	<link rel="stylesheet" href="<?php echo CDN;?>/CSS/estilos.css">
+	<script src="<?php echo CDN;?>/JS/login.js"></script>
 
 	<!--LIBRERIA FONTAWESOME-->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -27,15 +28,15 @@
 			<div class="col-md-2 col-sm-12 sidebar align-middle">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 divcongre">
-						<span class="spancongre">Congregacion Madrigales</span>
+						<span class="spancongre"> Congregación <?php echo ucwords($congregacion); ?></span>
 					</div>
 				</div>
 					<ul class="sidebarli">
-						<li><i class="fas fa-address-card"></i>  <span>Mi perfil</span></li>
+						<li><i class="far fa-smile"></i>         <span>Mi perfil   </span></li>
 						<li><i class="fas fa-address-card"></i>  <span>Publicadores</span></li>
-						<li><i class="fas fa-globe"></i>  <span>Territorios</span></li>
-						<li><i class="fas fa-bullhorn"></i>  <span>Campañas</span></li>
-						<li><i class="far fa-bell ale"></i>  <span>Alertas</span></li>
+						<li><i class="fas fa-globe">       </i>  <span>Territorios </span></li>
+						<li><i class="fas fa-bullhorn">    </i>  <span>Campañas    </span></li>
+						<li><i class="far fa-bell ale">    </i>  <span>Alertas     </span></li>
 					</ul>
 			</div>
 			<div class="col-md-10">
@@ -50,7 +51,7 @@
 					</div>
 					<div class="col-md-2 infousuario text-left">
 						<div class="usermenu">
-							<i class="far fa-address-book"></i><span> Bienvenido</span>
+							<i class="far fa-address-book"></i><span> Bienvenido: <strong class="nombreuser"><?php echo ucwords($nombre_usuario); ?></strong></span>
 						</div>
 					</div>
 					<div class="col-md-2">

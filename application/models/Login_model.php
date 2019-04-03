@@ -15,7 +15,7 @@ class Login_model extends CI_Model{
 		}
 
 		public function login($usuario,$password){
-			$User_data = $this->db->select('ID,ID_congregacion,nombre,password,email,activo')->where('nombre_usuario',$usuario)->or_where('email',$usuario)->get('administrador');
+			$User_data = $this->db->select('administrador.ID,administrador.ID_congregacion,administrador.nombre,administrador.password,administrador.email,administrador.activo,congregaciones.nombre as nombre_congregacion')->join('congregaciones', 'congregaciones.ID = administrador.ID_congregacion','left')->where('nombre_usuario',$usuario)->or_where('email',$usuario)->get('administrador');
 			if($User_data->num_rows()>0){
 				$User_data = $User_data->row_array();
 				$this->load->library('Encrypt_object');
