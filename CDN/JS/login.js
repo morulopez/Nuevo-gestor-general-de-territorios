@@ -68,7 +68,7 @@ class login{
     if(this.cargando){
       this.function_Cargando(document.getElementById('divcargalogin'));
     }
-    fetch(`${this.url}/Login_register/login?delay=4`,{
+    fetch(`${this.url}/Login_register/login`,{
       method:"POST",
       body:JSON.stringify(obj),
       headers:{

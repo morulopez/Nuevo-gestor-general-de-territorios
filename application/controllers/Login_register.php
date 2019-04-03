@@ -28,11 +28,24 @@ class Login_register extends CI_Controller {
 		$postdata = file_get_contents("php://input");
 		$post     = json_decode($postdata);
 		$validacion = $this->Login_model->login($post->usuario,$post->password);
-		echo json_encode($validacion);
+		if(!$validacion && $validacion=='Necesitas activar tu cuenta, vaya a su correo electronico y compruebe el correo que le enviamos para activar su cuenta'){
+			echo json_encode($validacion);
+		}else{
+			$this->load->library('Sesion_token');
+			$jwt = $this->sesion_token->make_sesion_token();
+			$array_sesion_token = [
+				"token"           => $jwt,
+				"id"              => $validacion['ID'],
+				"id_congregacion" => $validacion['ID_congregacion'],
+				"nombre"          => $validacion['nombre'],
+				"email"           => $validacion['email']
+			];
+			$this->session->set_userdata($array_sesion_token);
+			echo json_encode($validacion);
+		}
 	}
 	/**Funcion llamada desde CDN/JS/login.js y el metodo register_user() de forma asincrona por medio de fetch() y con el procedemos a registrar al usuario*/
 	function registro(){
-
 		$postdata = file_get_contents("php://input");
 		$post     = json_decode($postdata);
 		/**USAMOS LA LIBRERIA QUE HEMOS CREADO PARA ENCRIPTAR EL PASSWORD QUE HEMOS RECOGIDO**/

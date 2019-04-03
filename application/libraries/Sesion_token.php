@@ -15,7 +15,7 @@ class Sesion_token{
 	 	$tm=time();
 		$token = array(
 	    "iat" 	 =>  $tm,
-	    "exp" 	 =>  $tm + 36000
+	    "exp" 	 =>  $tm + 20
 		);
 		$jwt = JWT::encode($token, $this->key);
 		return $jwt;

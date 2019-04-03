@@ -18,19 +18,33 @@ $hook['post_controller'][]= function(){
 	$this->CI->load->library('Sesion_token');
 	if(!empty($this->CI->session->userdata['token'])){
 	$valido = $this->CI->sesion_token->get_token($this->CI->session->userdata['token']);
-		if($valido && uri_string()== 'login' || uri_string()=='register'){
+		if($valido && uri_string()== 'login' || $valido && uri_string()=='registrarse'){
 			redirect('/');
-		}elseif(!$valido && uri_string()!='login'){
+		}elseif(!$valido){
+			$this->CI->session->sess_destroy();
 			redirect('/login');
 		}
-	}else{
-			$this->CI->load->helper('cookie');
-			if(uri_string()== 'registrarse' && !get_cookie('valid_register') || uri_string()== 'Inicio_territorios/pagina_registro' && !get_cookie('valid_register')){
-				 redirect('/login');
-			}elseif(uri_string()!= 'registrarse' && !empty(get_cookie('valid_register'))){
+	}else{ 
+		$this->CI->load->helper('cookie');
+        if(uri_string()!='login' && uri_string()!='registrarse' && uri_string()!='Login_register/comprobarKey'){
+        	redirect('/login');
+		}
+		if(uri_string()== 'registrarse' && !get_cookie('valid_register')){
+			redirect('/login');
+		}
+		if(uri_string()!= 'registrarse' && !empty(get_cookie('valid_register'))){
 				delete_cookie('valid_register');
-			}/*elseif(uri_string()!='login' && uri_string()!='registrarse' ){
-				redirect('/login');
-			}*/
+			}
 	}
 };
+
+/*$hook['post_system'][]=function(){
+	$this->CI=&get_instance();
+	$this->CI->load->helper('cookie');
+	if(uri_string()== 'registrarse' && !get_cookie('valid_register')){
+			redirect('/login');
+	}
+	if(uri_string()!= 'registrarse' && !empty(get_cookie('valid_register'))){
+				delete_cookie('valid_register');
+			}
+};*/
