@@ -20,28 +20,35 @@
 
 	<!--Libreria CHART.JS-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+	<!--Libreria sweetalert2-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 </head>
 <body>
 	<div class="container-fluid">	
 		<div class="row">
-			<div class="col-md-2 col-sm-12 sidebar align-middle">
+			<div class="col-md-2 col-12 col-sm-2 sidebar align-middle">
 				<div class="row">
-					<div class="col-md-12 col-sm-12 divcongre">
+					<div class="col-md-12 col-sm-12 col-lg-12 divcongre text-center">
 						<span class="spancongre"> Congregación <?php echo ucwords($congregacion); ?></span>
 					</div>
 				</div>
-					<ul class="sidebarli">
-						<li><i class="far fa-smile"></i>         <span>Mi perfil   </span></li>
-						<li><i class="fas fa-address-card"></i>  <span>Publicadores</span></li>
-						<li><i class="fas fa-globe">       </i>  <span>Territorios </span></li>
-						<li><i class="fas fa-bullhorn">    </i>  <span>Campañas    </span></li>
-						<li><i class="far fa-bell ale">    </i>  <span>Alertas     </span></li>
-					</ul>
+				<div class="row">
+					<div class="col-md-12 col-12 col-lg-12">
+						<ul class="sidebarli">
+							<a href="<?php echo site_url('mi_perfil')?>"><li><i class="far fa-smile"></i>         <span>Mi perfil   </span></li></a>
+							<a href="<?php echo site_url('publicadores')?>"><li><i class="fas fa-address-card"></i>  <span>Publicadores</span></li></a>
+							<a href="<?php echo site_url('territorios')?>"><li><i class="fas fa-globe">       </i>  <span>Territorios </span></li></a>
+							<a href="<?php echo site_url('campañas')?>"><li><i class="fas fa-bullhorn">    </i>  <span>Campañas    </span></li></a>
+							<li><i class="far fa-bell ale">    </i>  <span>Alertas     </span></li>
+							<li><i class="fas fa-play">    </i>  <span>Videos tutoriales     </span></li>
+						</ul>
+					</div>
+				</div>
 			</div>
-			<div class="col-md-10">
+			<div class="col-md-10 col-12 col-sm-10">
 				<div class="row text-right divnav">
-					<div class="col-md-8 text-left">
+					<div class="col-md-8 col-12 text-left">
 						<nav class="navbar  navegador text-left">
 			  				<form class="form-inline">
 							    <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">

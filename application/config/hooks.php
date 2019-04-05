@@ -51,7 +51,7 @@ $hook['post_controller'][]= function(){
 		}
 	}else{ 
 		$this->CI->load->helper('cookie');
-        if(uri_string()!='login' && uri_string()!='registrarse' && uri_string()!='Login_register/comprobarKey'){
+        if(uri_string()!='login' && uri_string()!='registrarse' && uri_string()!='Login_register/comprobarKey' && uri_string()!='Login_register/registro'){
         	redirect('/login');
 		}
 		if(uri_string()== 'registrarse' && !get_cookie('valid_register')){
@@ -59,6 +59,7 @@ $hook['post_controller'][]= function(){
 		}
 		if(uri_string()!= 'registrarse' && !empty(get_cookie('valid_register'))){
 				delete_cookie('valid_register');
-			}
+		}
+
 	}
 };

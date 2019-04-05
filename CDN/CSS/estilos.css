@@ -24,6 +24,14 @@ body{
 .sidebarli li{
 	margin-bottom: 20px;
 }
+.sidebarli a{
+	text-decoration: none;
+	color:#efb8e6 !important;
+}
+.sidebarli a:hover{
+	text-decoration: none;
+	color:#efb8e6 !important;
+}
 .sidebarli li i{
 	margin-right: 20px;
 }
@@ -101,4 +109,82 @@ body{
  	background-color: rgba(0,0,255,0.1);
  	padding: 5px;
  	border-radius: 5px;
+ 	text-transform: capitalize;
  }
+ .datosemail{
+ 	background-color: rgba(0,0,255,0.1);
+ 	padding: 5px;
+ 	border-radius: 5px;
+ }
+ .fa-pen-nib{
+ 	cursor:pointer;
+ 	border: 1px solid #42f498;
+ 	padding: 8px;
+ 	border-radius: 4px;
+ }
+ .divnav{
+ 	background-color: #fff;
+ }
+ .btn-outline-primary{
+ 	display: none;
+ }
+
+ /******ESTILOS DE PAGINA DE PUBLICADORES*****/
+
+.modal_add_publicadores{
+	position:fixed;
+	top:-100vh;
+	left:0;
+	z-index: 99999999;
+	background-color: rgba(0,0,0,0.4);
+	width:100vw;
+	height:100vh;
+	opacity:0;
+	transition: opacity 0.35s ease;
+	text-align: center;
+}
+.modal_add_publicadores .content-modal{
+	width:100%;
+	max-width:500px;
+	position: fixed;
+	transition: top 0.35s easy;
+	left: 50%;
+	top:-100vh;
+	margin-left: -250px;
+	background:#fff;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+	border-radius: 2px;
+	z-index:9999999;
+}
+
+.modal_add_publicadores:target{
+	opacity: 1;
+	top:0;
+}
+.modal_add_publicadores:target .content_modal{
+	margin-top:100px;
+	text-align: center;
+	background-color:#030223;
+	color:#fff;
+	border-radius: 5px;
+	padding:20px;
+	width: 50%;
+	transition: top 0.35s easy;
+	margin-left: 25%;
+}
+.close-modal{
+	text-decoration: none;
+	color:#fff;
+	background-color: red;
+	padding:5px;
+	border-radius:20px;
+
+}
+.close-modal:hover{
+	text-decoration: none;
+	color:#fff;
+	background-color: red;
+	padding:5px;
+	border-radius:20px;
+
+}

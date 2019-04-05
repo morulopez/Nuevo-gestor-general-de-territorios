@@ -53,4 +53,6 @@ $route['default_controller'] = 'Inicio_territorios/Inicio';
 $route['404_override'] = '';
 $route['registrarse'] ='Inicio_territorios/pagina_registro';
 $route['login'] ='Inicio_territorios/login';
+$route['mi_perfil'] ='Inicio_territorios/inicio';
+$route['publicadores'] = 'Publicadores/req_publicadores';
 $route['translate_uri_dashes'] = FALSE;

@@ -97,7 +97,7 @@ class login{
             title: 'Acceso correcto',
             text: 'La clave es correcta',
           })
-         return setTimeout(()=> window.location = `${this.url}`, 2000);
+         return setTimeout(()=> window.location = `${this.url}/mi_perfil`, 2000);
       });
     });
   }
@@ -194,11 +194,12 @@ class login{
 /*** Objeto datos usuario,territorios publicadores etc con este objeto obtenemos los datos ***/
 
 class dataUser{
-  constructor(url){
+  constructor(url,id){
     this.url      = url;
+    this.id       = id
   }
-  dataUserAdmin(id){
-    let obj = {"id": id};
+  dataUserAdmin(){
+    let obj = {"id": this.id};
     fetch(`${this.url}/Publicadores/datos_admin`,{
       method:"POST",
       body:JSON.stringify(obj),
@@ -207,8 +208,57 @@ class dataUser{
         'Content-Type':'application/x-www-form-urlencoded'  
       }
     }).then( data => {
-      data.json().then(datos => document.getElementById('listdata').innerHTML=`<ul class="list-group listaperfil"><li class="list-group-item"><div class="row"><div class="col-md-4">Nombre:</div><div class="col-md-4 datos">${datos.nombre}</div></div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Apellidos:</div><div class="col-md-4 datos">${datos.apellidos}</div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Email:</div><div class="col-md-4 datos">${datos.email}</div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Nombre Congregación:</div> <div class="col-md-4 datos">${datos.nombre_congregacion}</div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Provincia:</div>        <div class="col-md-4 datos">${datos.provincia}</div></li><li class="list-group-item"><div class="row"><div class="col-md-4">Localidad:</div>        <div class="col-md-4 datos">${datos.localidad}</div></li></ul>`);
+      data.json().then(datos => document.getElementById('listdata').innerHTML=`<ul class="list-group listaperfil">
+        <li class="list-group-item"><div class="row"><div class="col-md-4 col-sm-4 col-4">Nombre:</div><div class="col-md-6 col-sm-6 col-6 datos" id="id_nombre">${datos.nombre}</div><div class="col-md-2 col-sm-2 col-2"><i class="fas fa-pen-nib" id="boton_id_nombre" title="Actualizar datos" onclick="ReqDatos.update('${datos.nombre}','id_nombre')"></i><button type="button" class="btn btn-outline-primary butonupdate" id="actualizar_id_nombre" style="display:none">Actualizar</button></div></div></li>
+        <li class="list-group-item"><div class="row"><div class="col-md-4 col-sm-4 col-4">Apellidos:</div><div class="col-md-6 col-sm-6 col-6 datos" id="id_apellidos">${datos.apellidos}</div><div class="col-md-2 col-sm-2 col-2"><i class="fas fa-pen-nib" id="boton_id_apellidos" title="Actualizar datos" onclick="ReqDatos.update('${datos.apellidos}','id_apellidos')"></i><button type="button" class="btn btn-outline-primary butonupdate" id="actualizar_id_apellidos" style="display:none">Actualizar</button></div></div></li>
+        <li class="list-group-item"><div class="row"><div class="col-md-4 col-sm-4 col-4">Email:</div><div class="col-md-6 col-sm-6 col-6 datosemail" id="id_email">${datos.email}</div><div class="col-md-2 col-sm-2 col-2"><i class="fas fa-pen-nib" id="boton_id_email" title="Actualizar datos" onclick="ReqDatos.update('${datos.email}','id_email')"></i><button type="button" class="btn btn-outline-primary butonupdate" id="actualizar_id_email" style="display:none">Actualizar</button></div></div></li>
+        <li class="list-group-item"><div class="row"><div class="col-md-4 col-sm-4 col-4">Nombre Congregación:</div> <div class="col-md-6 col-6 col-sm-6 datos" id="id_nombre_congregacion">${datos.nombre_congregacion}</div><div class="col-md-2 col-sm-2 col-2"><i class="fas fa-pen-nib" id="boton_id_nombre_congregacion" title="Actualizar datos" onclick="ReqDatos.update('${datos.nombre_congregacion}','id_nombre_congregacion')"></i><button type="button" class="btn btn-outline-primary butonupdate" id="actualizar_id_nombre_congregacion" style="display:none">Actualizar</button></div></div></li>
+        <li class="list-group-item"><div class="row"><div class="col-md-4 col-sm-4 col-4">Provincia:</div><div class="col-md-6 col-sm-6 col-6 datos" id="id_provincia">${datos.provincia}</div><div class="col-md-2 col-sm-2 col-2"><i class="fas fa-pen-nib" id="boton_id_provincia" title="Actualizar datos" onclick="ReqDatos.update('${datos.provincia}','id_provincia')"></i><button type="button" class="btn btn-outline-primary butonupdate" id="actualizar_id_provincia" style="display:none">Actualizar</button></div></div></li>
+        <li class="list-group-item"><div class="row"><div class="col-md-4 col-sm-4 col-4">Localidad:</div><div class="col-md-6 col-sm-6 col-6 datos" id="id_localidad">${datos.localidad}</div><div class="col-md-2 col-sm-2 col-2"><i class="fas fa-pen-nib" id="boton_id_localidad" title="Actualizar datos" onclick="ReqDatos.update('${datos.localidad}','id_localidad')"></i><button type="button" class="btn btn-outline-primary butonupdate" id="actualizar_id_localidad" style="display:none">Actualizar</button></div></div></li>
+        </ul>`);
     });
   }
+
+  update(dato, id){
+    /*esta funcion recoge los datos del html justo escrito aqui arriba*/
+   document.getElementById("boton_"+id).style.display = 'none';
+   document.getElementById("actualizar_"+id).style.display = 'block';
+   document.getElementById(id).innerHTML=`<input class="form-control" id="dato_${id}"" value="${dato}">`;
+   document.getElementById("actualizar_"+id).addEventListener("click",()=>{
+    let obj = {};
+    obj[id] = document.getElementById(`dato_${id}`).value
+    fetch(`${this.url}/Publicadores/datos_update`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then( dato_up => {
+       dato_up.json().then(up =>{
+        if(up){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+          Toast.fire({
+            type: 'success',
+            title: 'Actualizado correctamente'
+          })
+          this.dataUserAdmin();
+        }
+       });
+    })
+   });
+  }
+  /*******Recogemos los publicadores que pertenezcan a la congregacion******/
+  req_publicadores(){
+
+  }
+  /**buscamos a los publicadores que pertenezcan a la congregacion**/
 }
+
+
 
