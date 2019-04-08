@@ -37,7 +37,7 @@ class Publicadores extends CI_Controller {
 				$data_update = $this->Datos_usuario->update_user_congre('nombre_congre',$post->id_nombre_congregacion);
 				/**actualizamos los datos de la sesion*/
 				$this->session->unset_userdata ('nombre_congregacion');
-				$this->session->set_userdata(['nombre_congregacion' => $post->id_email]);
+				$this->session->set_userdata(['nombre_congregacion' => $post->id_nombre_congregacion]);
 			}elseif(!empty($post->id_provincia)){
 				$data_update = $this->Datos_usuario->update_user_congre('provincia',$post->id_provincia);
 			}elseif(!empty($post->id_localidad)){
@@ -57,4 +57,32 @@ class Publicadores extends CI_Controller {
 	                                   "congregacion"   => $this->session->userdata['nombre_congregacion'],
 	                                   "contenido"      => $html]);
 	}
+
+	function agregar_publicador(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		if($post->email!=''){
+			$this->load->helper('email');
+			if(!valid_email($post->email)){
+				echo json_encode('Email no valido');
+			}else{
+				$res = $this->Datos_usuario->add_publicador($post);
+				echo json_encode($res);
+			}
+		}else{
+			$res = $this->Datos_usuario->add_publicador($post);
+			echo json_encode($res);
+		}
+	}
+
+	function req_datos_publicadores(){
+		$res = $this->Datos_usuario->req_datos_publicadores();
+		echo json_encode($res);
+	}
+	function info_publicador(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+			echo json_encode($this->load->view("theme/info_publicador.php",["id" => $this->session->userdata['id']],true));
+	}
+
 }

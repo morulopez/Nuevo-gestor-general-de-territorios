@@ -33,9 +33,36 @@ function update_user_congre($dato,$valor){
 			 return true;
 	}
 }
+function add_publicador($data){
+	if($data->nombrepublicador=="" || $data->apellidospublicador==""){
+		return false;
+	}if($data->email!=""){
+		$comprovarexiste = $this->db->select('email')->where('email',$data->email)->get('publicadores');
+			if($comprovarexiste->num_rows()>0){
+				return $existe = 'El email ya existe por favor escoja otro';
+			}
+	}
+	$array_insert_publicador = [
+		        "ID_congregacion" => $this->session->userdata['id_congregacion'],
+				"nombre"    	  => $data->nombrepublicador,
+				"apellidos"		  => $data->apellidospublicador,
+				"email" 		  => $data->email,
+				"telefono" 		  => $data->telefono
+			];
 
+	$datos = $this->db->insert('publicadores',$array_insert_publicador);
+	return true;
+}
 
+function req_datos_publicadores(){
+	$publicadores=$this->db->select('publicadores.id,publicadores.nombre,publicadores.apellidos,publicadores.email,publicadores.telefono,territorios.devuelta')->join('territorios','territorios.ID_publicador = publicadores.ID','left')->where('publicadores.ID_congregacion',$this->session->userdata['id_congregacion'])->get('publicadores');
+	return $publicadores->result_array();
+}
 
+function info_user($id){
+	$publicadores=$this->db->select('publicadores.id,publicadores.nombre,publicadores.apellidos,publicadores.email,publicadores.telefono,territorios.devuelta')->join('territorios','territorios.ID_publicador = publicadores.ID','left')->where('publicadores.ID_congregacion',$this->session->userdata['id_congregacion'])->where('ID',$id)->get('publicadores');
+	return $publicadores->row_array();
+}
 
 
 

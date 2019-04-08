@@ -255,9 +255,100 @@ class dataUser{
   }
   /*******Recogemos los publicadores que pertenezcan a la congregacion******/
   req_publicadores(){
-
+    let obj = {"id": this.id};
+    fetch(`${this.url}/Publicadores/req_datos_publicadores`).then( data => {
+      data.json().then(datos => {
+         document.getElementById('listdatapubli').innerHTML+=`<div class="row">
+          <div class="col-md-4">Nombre:</div>
+          <div class="col-md-4">Apellidos:</div>
+         </div>`;
+        for(var key in datos){
+          var f = new Date();
+          var mes=f.getMonth()+1;
+          var year=f.getFullYear();
+          var day=f.getDate();
+          var clasealerta='';
+          if(datos[key].devuelta!=null){
+            if(year.toString()+mes.toString()+day.toString()>=datos[key].devuelta){
+              clasealerta='clasealer';
+            }
+          }
+         document.getElementById('listdatapubli').innerHTML+=`<div class="row linea ${clasealerta}">
+          <div class="col-md-4">${datos[key].nombre}</div>
+          <div class="col-md-4">${datos[key].apellidos}</div>
+          <div class="col-md-4"><a href="#modal_info_publicadores"><button type="button" onclick="ReqDatos.ver_publicador('${datos[key].id}');" class="btn btn-outline-info botonver"><i class="fas fa-eye"></i>Ver publicador</button></a></div>
+         </div>`;
+        }
+        clasealerta='';
+      });
+    });
+  }
+  /**Funcio para llamar a la vista donde veremos al publicador**/
+  ver_publicador(id){
+    let obj={"id":id};
+    fetch(`${this.url}/Publicadores/info_publicador`,{
+       method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded' 
+      }}).then( res => {
+          res.json().then( respuesta => {
+            document.getElementById('show_info_publicador').innerHTML= respuesta
+          })
+      })
   }
   /**buscamos a los publicadores que pertenezcan a la congregacion**/
+  search_publicador(){
+    
+  }
+  /** agregamos publicadores a cada congregacion**/
+  agregar_Publicador(){
+    let form  = document.getElementById('formpublicador');
+    let obj   = {};
+    for(var i = 0 ; i<form.elements.length-1;i++){
+      if(form.elements[i].id == 'nombrepublicador' || form.elements[i].id == 'apellidospublicador'){
+        if(document.getElementById(form.elements[i].id).value ==''){
+          return document.getElementById('error').innerHTML='El nombre y apellidos son obligatorios';
+        } 
+      }
+      document.getElementById('error').innerHTML='';
+      obj[form.elements[i].id] = document.getElementById(form.elements[i].id).value;
+    }
+    fetch(`${this.url}/Publicadores/agregar_publicador`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then(resp =>{
+      resp.json().then(res=> {
+        if(res === 'Email no valido'){
+          return document.getElementById('error').innerHTML='El email no es valido';
+        }
+        if(res === 'El email ya existe por favor escoja otro'){
+          document.getElementById('cerrar-modal').click();
+          return Swal.fire({
+            type: 'error',
+            title: 'Este email ya existe, escoja otro por favor',
+            text: '',
+          })
+        }
+        if(!res){
+          return
+        }
+        if(res){
+          document.getElementById('cerrar-modal').click();
+          Swal.fire({
+            type: 'success',
+            title: 'Publicador creado correctamente',
+            text: 'El publicador se ha añadido correctamente',
+          }).then(()=>form.reset());
+        }
+      });
+    })
+  }
 }
 
 
