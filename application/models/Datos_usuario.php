@@ -54,9 +54,14 @@ function add_publicador($data){
 	return true;
 }
 
-function req_datos_publicadores(){
+function req_datos_publicadores($pagina){
+	$tamaño_pagina = 10;
 	$publicadores=$this->db->select('publicadores.id,publicadores.nombre,publicadores.apellidos,publicadores.email,publicadores.telefono,territorios.devuelta')->join('territorios','territorios.ID_publicador = publicadores.ID','left')->where('publicadores.ID_congregacion',$this->session->userdata['id_congregacion'])->get('publicadores');
-	return $publicadores->result_array();
+	$numero_filas = $publicadores->num_rows();
+	$total_paginas=ceil($numero_filas/$tamaño_pagina);
+	$empezar_desde=($pagina-1)*$tamaño_pagina;
+	$result_publicadores=$this->db->select('publicadores.id,publicadores.nombre,publicadores.apellidos,publicadores.email,publicadores.telefono,territorios.devuelta')->join('territorios','territorios.ID_publicador = publicadores.ID','left')->where('publicadores.ID_congregacion',$this->session->userdata['id_congregacion'])->get('publicadores',$tamaño_pagina,$empezar_desde);
+	return ["total_paginas"=>$total_paginas,"publicadores"=>$result_publicadores->result_array()];
 }
 
 function info_user($id){

@@ -1,9 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$mas=$this->uri->segment(2)+1;
+$menos=$this->uri->segment(2)-1;
+if($this->uri->segment(2)<1){
+	redirect(site_url('publicadores/1'));
+}
 ?>
 <script>
 	let ReqDatos = new dataUser('<?php echo URL; ?>','<?php echo $id; ?>');
-	window.onload = ReqDatos.req_publicadores();
+	ReqDatos.req_publicadores('<?php echo $this->uri->segment(2); ?>');
+	console.log(ReqDatos.paginas)
 </script>
 
 <div class="col-md-3">
@@ -43,25 +49,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 </div>
-<div class="col-md-10">
-    <div class="row">
-		<div class="col-md-9">
-			<h3 class="h3perfil">Publicadores de la congregación <?php echo ucwords($this->session->userdata['nombre_congregacion']);?> </h3>
-			<div id="listdatapubli">
-			</div>
-		</div>
-	</div>
-</div>
-<div id="modal_info_publicadores" class="modal_info_publicadores">
-	<div class="content_modal_publicadores">
-		<div class="row">
-			<div class="col-md-12 text-right cerrarmodal">
-				<a href="#" class="close-modal" id="cerrar-modal">X</a>
-			</div>
-			<div class="row">
-				<div class="col-md-12" id="show_info_publicador">
+	<div class="col-md-10">
+	    <div class="row">
+			<div class="col-md-9">
+				<h3 class="h3perfil">Publicadores de la congregación <?php echo ucwords($this->session->userdata['nombre_congregacion']);?> </h3>
+				<div id="listdatapubli">
+				</div>
+				<div>
+					<nav aria-label="Page navigation example">
+					  <ul class="pagination">
+					  	<li class="page-item">
+					      <a class="page-link" href="<?php echo site_url('publicadores/'.$menos);?>" aria-label="Previous">
+					        <span aria-hidden="true">&laquo;</span>
+					      </a>
+					    </li>
+					    <li id="paginationpubli">
+						</li>
+						<li class="page-item">
+					      <a class="page-link" href="<?php echo site_url('publicadores/'.$mas) ?>" aria-label="Next">
+					        <span aria-hidden="true">&raquo;</span>
+					      </a>
+					    </li>
+					  </ul>
+					</nav>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+	<div id="modal_info_publicadores" class="modal_info_publicadores">
+		<div class="content_modal_publicadores">
+			<div class="row">
+				<div class="col-md-12 text-right cerrarmodal">
+					<a href="#" class="close-modal" id="cerrar-modal">X</a>
+				</div>
+				<div class="row">
+					<div class="col-md-12" id="show_info_publicador">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

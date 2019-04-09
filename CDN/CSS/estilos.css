@@ -238,6 +238,7 @@ body{
   	-moz-box-shadow: 8px 8px 14px #999;
   	filter: shadow(color=#999999, direction=135, strength=2);
   	text-transform: capitalize;
+  	margin-bottom: 50px;
 }
 #listdata{
 	border-radius: 8px;
@@ -272,4 +273,20 @@ body{
 	background-color: red;
 	color:#fff;
 	border:1px solid red;
+}
+.mi_perfil:target{
+	background-color: red;
+}
+.firstline{
+	background-color: black;
+	color:white;
+	padding: 10px;
+	margin:0px;
+	border-radius: 4px;
+}
+.page-link{
+	display:inline-block !important;
+}
+.paginationpubli a{
+	display:inline-block !important;
 }

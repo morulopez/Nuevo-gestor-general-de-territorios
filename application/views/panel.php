@@ -36,10 +36,10 @@
 				<div class="row">
 					<div class="col-md-12 col-12 col-lg-12">
 						<ul class="sidebarli">
-							<a href="<?php echo site_url('mi_perfil')?>"><li><i class="far fa-smile"></i><span>Mi perfil   </span></li></a>
-							<a href="<?php echo site_url('publicadores')?>"><li><i class="fas fa-address-card"></i>  <span>Publicadores</span></li></a>
-							<a href="<?php echo site_url('territorios')?>"><li><i class="fas fa-globe"></i><span>Territorios </span></li></a>
-							<a href="<?php echo site_url('campañas')?>"><li><i class="fas fa-bullhorn"></i><span>Campañas    </span></li></a>
+							<a href="<?php echo site_url('mi_perfil')?>"><li id="mi_perfil"><i class="far fa-smile"></i><span>Mi perfil</span></li></a>
+							<a href="<?php echo site_url('publicadores')."/1";?>"><li id="publicadores"><i class="fas fa-address-card"></i><span>Publicadores</span></li></a>
+							<a href="<?php echo site_url('territorios')?>"><li><i class="fas fa-globe"></i><span>Territorios</span></li></a>
+							<a href="<?php echo site_url('campañas')?>"><li><i class="fas fa-bullhorn"></i><span>Campañas</span></li></a>
 							<li><i class="far fa-bell ale"></i><span>Alertas</span></li>
 							<li><i class="fas fa-play"></i><span>Videos tutoriales</span></li>
 						</ul>

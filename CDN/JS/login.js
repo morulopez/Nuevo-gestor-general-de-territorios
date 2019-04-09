@@ -196,7 +196,7 @@ class login{
 class dataUser{
   constructor(url,id){
     this.url      = url;
-    this.id       = id
+    this.id       = id;
   }
   dataUserAdmin(){
     let obj = {"id": this.id};
@@ -254,14 +254,23 @@ class dataUser{
    });
   }
   /*******Recogemos los publicadores que pertenezcan a la congregacion******/
-  req_publicadores(){
-    let obj = {"id": this.id};
-    fetch(`${this.url}/Publicadores/req_datos_publicadores`).then( data => {
-      data.json().then(datos => {
-         document.getElementById('listdatapubli').innerHTML+=`<div class="row">
+  req_publicadores(numpage){
+    let obj = {"numpage": numpage};
+    fetch(`${this.url}/Publicadores/req_datos_publicadores`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then( data => {
+      data.json().then(data => {
+         document.getElementById('listdatapubli').innerHTML+=`<div class="row firstline">
           <div class="col-md-4">Nombre:</div>
           <div class="col-md-4">Apellidos:</div>
          </div>`;
+         var datos      = data.publicadores;
+         var pagination = data.total_paginas;
         for(var key in datos){
           var f = new Date();
           var mes=f.getMonth()+1;
@@ -280,10 +289,13 @@ class dataUser{
          </div>`;
         }
         clasealerta='';
+        for(var i=1;i<=pagination;i++){
+            document.getElementById('paginationpubli').innerHTML+=`<a class="page-link" href="${this.url}/publicadores/${i}">${i}</a>`
+        }
       });
     });
   }
-  /**Funcio para llamar a la vista donde veremos al publicador**/
+  /**Funcion para llamar a la vista donde veremos al publicador**/
   ver_publicador(id){
     let obj={"id":id};
     fetch(`${this.url}/Publicadores/info_publicador`,{
@@ -344,7 +356,11 @@ class dataUser{
             type: 'success',
             title: 'Publicador creado correctamente',
             text: 'El publicador se ha añadido correctamente',
-          }).then(()=>form.reset());
+          }).then(()=>{
+            form.reset();
+            document.getElementById('listdatapubli').innerHTML='';
+            this.req_publicadores();
+          });
         }
       });
     })

@@ -76,7 +76,9 @@ class Publicadores extends CI_Controller {
 	}
 
 	function req_datos_publicadores(){
-		$res = $this->Datos_usuario->req_datos_publicadores();
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		$res = $this->Datos_usuario->req_datos_publicadores($post->numpage);
 		echo json_encode($res);
 	}
 	function info_publicador(){
