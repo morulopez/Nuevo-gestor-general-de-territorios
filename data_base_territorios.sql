@@ -1,4 +1,3 @@
-
 CREATE TABLE secret_key(
 secret_key 				VARCHAR(70) NOT NULL
 );
@@ -43,16 +42,17 @@ FOREIGN KEY (ID_congregacion) REFERENCES congregaciones(ID) ON DELETE CASCADE
 CREATE TABLE territorios(
 ID 					INT(30) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ID_congregacion 	INT(10) NOT NULL,
-ID_publicador 	  	INT(20) NOT NULL,
+ID_publicador 	  	INT(20) NULL,
 numero_territorio 	VARCHAR(10),
 imagen 				VARCHAR(50),
 entrega 			VARCHAR(10),
 devuelta 			VARCHAR(10),
 asignado 			TINYINT(1) NOT NULL DEFAULT '0',
+ID_publicador_campaind INT(20) NULL,
 asignado_campaing 	TINYINT(1) NOT NULL DEFAULT '0',
 entrega_campaing 	VARCHAR(10),
 devuelta_campaing 	VARCHAR(10),
-FOREIGN KEY (ID_publicador) REFERENCES publicadores(ID) ON DELETE CASCADE
+FOREIGN KEY (ID_publicador) REFERENCES congregaciones(ID) ON DELETE CASCADE
 );
 
 CREATE TABLE zona(

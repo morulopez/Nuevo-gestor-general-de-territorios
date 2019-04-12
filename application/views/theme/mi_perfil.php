@@ -11,6 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<h3 class="h3perfil">Mi perfil</h3>
 				<div id="listdata">
 				</div>
+				<div class="row">
+					<div id="erroremail">
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

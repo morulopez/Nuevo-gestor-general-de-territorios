@@ -10,7 +10,6 @@
 
 	<!--LIBRERIA FONTAWESOME-->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-	<link rel="stylesheet" href="font-awesome-animation.min.css">
 
 	<!--BOOTSTRAP ESTILOS-->
 	<script src="<?php echo CDN;?>/bootstrap/js/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -22,7 +21,12 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
 	<!--Libreria sweetalert2-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
+	<script>
+		window.addEventListener('load',()=>{
+			let Login = new login();
+			Login.destacar_pagina('<?php echo $this->uri->segment(1); ?>');
+		});
+	</script>
 </head>
 <body>
 	<div class="container-fluid">	
@@ -38,10 +42,10 @@
 						<ul class="sidebarli">
 							<a href="<?php echo site_url('mi_perfil')?>"><li id="mi_perfil"><i class="far fa-smile"></i><span>Mi perfil</span></li></a>
 							<a href="<?php echo site_url('publicadores')."/1";?>"><li id="publicadores"><i class="fas fa-address-card"></i><span>Publicadores</span></li></a>
-							<a href="<?php echo site_url('territorios')?>"><li><i class="fas fa-globe"></i><span>Territorios</span></li></a>
-							<a href="<?php echo site_url('campañas')?>"><li><i class="fas fa-bullhorn"></i><span>Campañas</span></li></a>
-							<li><i class="far fa-bell ale"></i><span>Alertas</span></li>
-							<li><i class="fas fa-play"></i><span>Videos tutoriales</span></li>
+							<a href="<?php echo site_url('territorios')?>"><li id="territorios"><i class="fas fa-globe"></i><span>Territorios</span></li></a>
+							<a href="<?php echo site_url('campañas')?>"><li id="campañas"><i class="fas fa-bullhorn"></i><span>Campañas</span></li></a>
+							<li id="alertas"><i class="far fa-bell ale"></i><span>Alertas</span></li>
+							<li id="videos_tutoriales"><i class="fas fa-play"></i><span>Videos tutoriales</span></li>
 						</ul>
 					</div>
 				</div>

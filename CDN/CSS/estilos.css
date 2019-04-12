@@ -142,6 +142,7 @@ body{
 	opacity:0;
 	transition: opacity 0.35s ease;
 	text-align: center;
+	overflow: auto;
 }
 
 .modal_add_publicadores:target{
@@ -158,6 +159,7 @@ body{
 	width: 50%;
 	transition: top 0.35s easy;
 	margin-left: 25%;
+	overflow: auto;
 }
 
 /***modal infopublicador***/
@@ -172,12 +174,17 @@ body{
 	opacity:0;
 	transition: opacity 0.35s ease;
 	text-align: center;
+	overflow: auto;
 }
 
 .modal_info_publicadores:target{
 	opacity: 1;
 	top:0;
 }
+.swal2-toast-shown .swal2-shown{
+	z-index: 99999999;
+}
+
 .modal_info_publicadores:target .content_modal_publicadores{
 	margin-top:100px;
 	text-align: center;
@@ -185,9 +192,11 @@ body{
     background-image: linear-gradient(to bottom right,#f7fbff,#d0dae2);
 	border-radius: 5px;
 	padding:20px;
-	width: 50%;
+	width: 70%;
 	transition: top 0.35s easy;
-	margin-left: 25%;
+	margin-left: 16%;
+	overflow: auto;
+	margin-bottom: 40px;
 }
 
 .close-modal{
@@ -216,7 +225,7 @@ body{
 	text-decoration: none;
 	color:#030223;
 }
-#error{
+#error, #erroremail{
 	color:#d64a54;
 	font-weight: 900;
 	margin-left: 20px;
@@ -230,7 +239,7 @@ body{
 	border-radius: 7px;
 	padding: 5px;
 }
-#listdatapubli{
+#listdatapubli,.infoboxdata{
 	background-color: #fff;
 	padding:17px;
 	border-radius: 8px;
@@ -289,4 +298,26 @@ body{
 }
 .paginationpubli a{
 	display:inline-block !important;
+}
+.fa-circle{
+	color: #ed8e94;
+}
+.spancumplido{
+	font-size: 12px;
+	margin-left: 5px;
+}
+.infoboxdata .row{
+	margin-top: 10px;
+}
+.fa-arrow-circle-right,.fa-arrow-circle-down{
+	color:#7cef9b;
+	margin-left: 5px;
+}
+.lineashowterritorios .col-md-5{
+	margin:10px 0 0 30px;
+}
+.divpersonaldata{
+	background-color: #cff9de;
+	padding: 5px;
+	border-radius: 5px;
 }

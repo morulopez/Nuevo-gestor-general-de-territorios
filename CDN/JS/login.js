@@ -4,6 +4,10 @@ class login{
     this.cargando = false;
     this.url      = url;
   }
+  /*funcion para destacar la agina donde estamos en el menu*/
+  destacar_pagina(pagina){
+    document.getElementById(pagina).style.color='#fff';
+  }
   /*Con esta funcion cambiamos el elemento de html para ponerlo en forma de carga */
   function_Cargando(elemento){
      if(this.cargando){
@@ -172,7 +176,9 @@ class login{
       }
   }
 
-   /**Funcion para controlar el password del registro osea comparar que las contraseñas **/
+   /**
+   Funcion para controlar el password del registro osea comparar que las contraseñas 
+   **/
   controlPass(){
     let pass1 = document.getElementById('validationCustom07').value;
     let pass2 = document.getElementById('validationCustom08').value;
@@ -191,13 +197,20 @@ class login{
     
 }
 
-/*** Objeto datos usuario,territorios publicadores etc con este objeto obtenemos los datos ***/
+/*** 
+Objeto datos usuario,territorios publicadores etc con este objeto obtenemos los datos 
+***/
 
 class dataUser{
-  constructor(url,id){
+  constructor(url,id,numpage){
     this.url      = url;
     this.id       = id;
+    this.numpage  = numpage;
   }
+  /**
+  Esta funcion (dataUserAdmin())la llamamos desde la vista mi_perfil.php y con ella mostramos el dato del 
+  administrador de la correspondiente congregacion
+  **/
   dataUserAdmin(){
     let obj = {"id": this.id};
     fetch(`${this.url}/Publicadores/datos_admin`,{
@@ -219,11 +232,14 @@ class dataUser{
     });
   }
 
-  update(dato, id){
-    /*esta funcion recoge los datos del html justo escrito aqui arriba*/
+  update(dato,id){
+    /**
+    esta funcion recoge los datos del html justo escrito aqui arriba y con 
+    ella actualizamos los datos del administrador
+    **/
    document.getElementById("boton_"+id).style.display = 'none';
    document.getElementById("actualizar_"+id).style.display = 'block';
-   document.getElementById(id).innerHTML=`<input class="form-control" id="dato_${id}"" value="${dato}">`;
+   document.getElementById(id).innerHTML=`<input class="form-control" id="dato_${id}" value="${dato}">`;
    document.getElementById("actualizar_"+id).addEventListener("click",()=>{
     let obj = {};
     obj[id] = document.getElementById(`dato_${id}`).value
@@ -236,6 +252,9 @@ class dataUser{
       }
     }).then( dato_up => {
        dato_up.json().then(up =>{
+        if(up == 'Email no valido'){
+          return document.getElementById('erroremail').innerHTML=up;
+        }
         if(up){
           const Toast = Swal.mixin({
             toast: true,
@@ -247,16 +266,61 @@ class dataUser{
             type: 'success',
             title: 'Actualizado correctamente'
           })
+          document.getElementById('erroremail').innerHTML='';
           this.dataUserAdmin();
         }
        });
     })
    });
   }
-  /*******Recogemos los publicadores que pertenezcan a la congregacion******/
-  req_publicadores(numpage){
-    let obj = {"numpage": numpage};
-    fetch(`${this.url}/Publicadores/req_datos_publicadores`,{
+  /**
+  funcion para actualizar publicadores, esta funcion la llamamos desde la vista theme/info_pulicador
+  **/
+  update_publicador(dato,id,id_publicador){
+   document.getElementById("boton_"+id).style.display = 'none';
+   document.getElementById("actualizar_"+id).style.display = 'block';
+   document.getElementById(`div_${id}`).innerHTML=`<input class="form-control" id="dato_${id}" value="${dato}">`;
+   document.getElementById("actualizar_"+id).addEventListener("click",()=>{
+    let obj = {};
+    obj[id] = document.getElementById(`dato_${id}`).value;
+    obj['id_publicador'] = id_publicador;
+    fetch(`${this.url}/Publicadores/update_publicador`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then( dato_up => {
+       dato_up.json().then(up =>{
+        if(up === 'El email ya existe, escoja otro por favor' || up === 'Email no valido'){
+          return document.getElementById('erroremail').innerHTML=up;
+      
+        }
+        if(up){
+           const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+          Toast.fire({
+            type: 'success',
+            title: 'Actualizado correctamente'
+          })
+          this.ver_publicador(id_publicador);
+        }
+       })
+    })
+   })
+  }
+  /**
+  Recogemos los publicadores que pertenezcan a la congregacion,
+  esta funcion la ejecutamos en la vista publicadores.php y mediante document.getElementById() insertamos el HTML
+  **/
+  req_publicadores(){
+    let obj = {"numpage": this.numpage};
+    fetch(`${this.url}/Publicadores/req_all_publicadores`,{
       method:"POST",
       body:JSON.stringify(obj),
       headers:{
@@ -266,11 +330,13 @@ class dataUser{
     }).then( data => {
       data.json().then(data => {
          document.getElementById('listdatapubli').innerHTML+=`<div class="row firstline">
-          <div class="col-md-4">Nombre:</div>
-          <div class="col-md-4">Apellidos:</div>
+          <div class="col-md-3">Nombre:</div>
+          <div class="col-md-3">Apellidos:</div>
+          <div class="col-md-6 text-right"><i class="fas fa-circle"></i><span class="spancumplido">Publicadores con territorios cumplidos</span></div>
          </div>`;
          var datos      = data.publicadores;
          var pagination = data.total_paginas;
+         var id='';
         for(var key in datos){
           var f = new Date();
           var mes=f.getMonth()+1;
@@ -279,14 +345,22 @@ class dataUser{
           var clasealerta='';
           if(datos[key].devuelta!=null){
             if(year.toString()+mes.toString()+day.toString()>=datos[key].devuelta){
-              clasealerta='clasealer';
+              document.getElementById('primerdiv').classList.add("clasealer");
             }
           }
-         document.getElementById('listdatapubli').innerHTML+=`<div class="row linea ${clasealerta}">
-          <div class="col-md-4">${datos[key].nombre}</div>
-          <div class="col-md-4">${datos[key].apellidos}</div>
-          <div class="col-md-4"><a href="#modal_info_publicadores"><button type="button" onclick="ReqDatos.ver_publicador('${datos[key].id}');" class="btn btn-outline-info botonver"><i class="fas fa-eye"></i>Ver publicador</button></a></div>
-         </div>`;
+          if(datos[key].devuelta_campaing!=null){
+            if(year.toString()+mes.toString()+day.toString()>=datos[key].devuelta_campaing){
+              document.getElementById('primerdiv').classList.add("clasealer");
+            }
+          }
+          if(id!=datos[key].id){
+            document.getElementById('listdatapubli').innerHTML+=`<div class="row linea" id="primerdiv">
+            <div class="col-md-4">${datos[key].nombre}</div>
+            <div class="col-md-4">${datos[key].apellidos}</div>
+            <div class="col-md-4"><a href="#modal_info_publicadores"><button type="button" onclick="ReqDatos.ver_publicador('${datos[key].id}');" class="btn btn-outline-info botonver"><i class="fas fa-eye"></i>Ver publicador</button></a></div>
+           </div>`;
+          }
+          id=datos[key].id;
         }
         clasealerta='';
         for(var i=1;i<=pagination;i++){
@@ -295,7 +369,9 @@ class dataUser{
       });
     });
   }
-  /**Funcion para llamar a la vista donde veremos al publicador**/
+  /**
+  Funcion para llamar a la vista donde veremos a un publicador concreto
+  **/
   ver_publicador(id){
     let obj={"id":id};
     fetch(`${this.url}/Publicadores/info_publicador`,{
@@ -310,11 +386,16 @@ class dataUser{
           })
       })
   }
-  /**buscamos a los publicadores que pertenezcan a la congregacion**/
+  /**
+  con esta funcion buscamos a los publicadores que pertenezcan a la congregacion
+  **/
   search_publicador(){
     
   }
-  /** agregamos publicadores a cada congregacion**/
+  /** 
+  Agregamos publicadores a cada congregacion.Esta funcion es llamada desde la vista publicadores.php.
+  Al cargarse una ventana modal aparece el formulario para cargar los datos y el boton que ejecuta esta funcion
+  **/
   agregar_Publicador(){
     let form  = document.getElementById('formpublicador');
     let obj   = {};
@@ -358,8 +439,9 @@ class dataUser{
             text: 'El publicador se ha añadido correctamente',
           }).then(()=>{
             form.reset();
-            document.getElementById('listdatapubli').innerHTML='';
-            this.req_publicadores();
+            document.getElementById('listdatapubli').innerHTML   ='';
+            document.getElementById('paginationpubli').innerHTML ='';
+            this.req_publicadores(this.numpage);
           });
         }
       });

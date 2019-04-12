@@ -7,9 +7,8 @@ if($this->uri->segment(2)<1){
 }
 ?>
 <script>
-	let ReqDatos = new dataUser('<?php echo URL; ?>','<?php echo $id; ?>');
-	ReqDatos.req_publicadores('<?php echo $this->uri->segment(2); ?>');
-	console.log(ReqDatos.paginas)
+	let ReqDatos = new dataUser('<?php echo URL; ?>','<?php echo $id;?>','<?php echo $this->uri->segment(2); ?>');
+	ReqDatos.req_publicadores();
 </script>
 
 <div class="col-md-3">
@@ -53,6 +52,7 @@ if($this->uri->segment(2)<1){
 	    <div class="row">
 			<div class="col-md-9">
 				<h3 class="h3perfil">Publicadores de la congregación <?php echo ucwords($this->session->userdata['nombre_congregacion']);?> </h3>
+				<!--En este div (<div id="listdatapubli">) mostramos a tods los publicadores de su respectiva congregacion lo hacemos a traves de la funcion de javascript (ReqDatos.req_publicadores();) cargada arriba-->
 				<div id="listdatapubli">
 				</div>
 				<div>
@@ -82,10 +82,11 @@ if($this->uri->segment(2)<1){
 				<div class="col-md-12 text-right cerrarmodal">
 					<a href="#" class="close-modal" id="cerrar-modal">X</a>
 				</div>
-				<div class="row">
+			</div>
+				<!--En esta ventana modal se muestra los datos de un publicador en concreto,llamamos a una vista por Ajax y se carga en la ventana modal,al pulsar el boton que esta escrito en la funcion de javascript (ReqDatos.req_publicadores();)-->
+			<div class="row">
 					<div class="col-md-12" id="show_info_publicador">
 					</div>
-				</div>
 			</div>
 		</div>
 	</div>
