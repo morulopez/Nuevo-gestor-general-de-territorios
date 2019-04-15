@@ -293,6 +293,7 @@ class dataUser{
       }
     }).then( dato_up => {
        dato_up.json().then(up =>{
+        //console.log(up);
         if(up === 'El email ya existe, escoja otro por favor' || up === 'Email no valido'){
           return document.getElementById('erroremail').innerHTML=up;
       
@@ -447,6 +448,87 @@ class dataUser{
       });
     })
   }
+  load_again_publicadores(){
+     document.getElementById('listdatapubli').innerHTML='';
+     document.getElementById('paginationpubli').innerHTML ='';
+    this.req_publicadores();
+  }
+}
+
+class territorios{
+   constructor(url,id,numpage){
+    this.url      = url;
+    this.id       = id;
+    this.numpage  = numpage;
+    this.cargando = false;
+  }
+  /*Con esta funcion cambiamos el elemento de html para ponerlo en forma de carga */
+  function_Cargando(elemento){
+     if(this.cargando){
+        return elemento.innerHTML = "<span class='cargaterri'>Cargando...<i class='fa fa-spinner fa-spin' style='font-size:30px'></i></span>";
+     }
+        elemento.innerHTML = "";
+  }
+  activarFile(){
+    document.getElementById('contefile').click();
+  }
+  add_Territorio(){
+    document.getElementById('errorterritorios').innerHTML='';
+    this.cargando=true;
+      if(this.cargando){
+        this.function_Cargando(document.getElementById('divcargaterritorios'));
+      }
+    let form  = document.getElementById('formpterritorios');
+    if(document.getElementById('numero').value=='' || document.getElementById('zona').value==''){
+       this.cargando=false;
+       this.function_Cargando(document.getElementById('divcargaterritorios'));
+       return document.getElementById('errorterritorios').innerHTML='El nombre y la zona del territorio son obligatorios';
+    }
+   const formData = new FormData();
+    formData.append("objeto",document.getElementById('contefile').files[0]);
+    formData.append('numero_terri',document.getElementById('numero').value);
+    formData.append('zona',document.getElementById('zona').value);
+    fetch(`${this.url}/territorios/add_territorio`,{
+     method:"POST",
+     body:formData
+    }).then(resp => {
+      resp.json().then(resj=>{
+        console.log(resj);
+        if(resj==='Este numero de territorio ya tiene esta zona asignada, cambia el numero o la zona por favor'){
+          this.cargando=false;
+          this.function_Cargando(document.getElementById('divcargaterritorios'));
+          return document.getElementById('errorterritorios').innerHTML=resj;
+        }
+        if(resj){
+          this.cargando=false;
+          this.function_Cargando(document.getElementById('divcargaterritorios'));
+          document.getElementById('cerrar-modal').click();
+          return Swal.fire({
+            type: 'success',
+            title: 'Territorio creado correctamente',
+            text: 'El territorio se ha creado correctamente',
+          }).then(()=>{
+            form.reset();
+            document.getElementById('errorterritorios').innerHTML='';
+            /*document.getElementById('listdatapubli').innerHTML   ='';
+            document.getElementById('paginationpubli').innerHTML ='';*/
+            //this.req_publicadores(this.numpage);
+          });
+        }
+        if(!resj){
+           document.getElementById('cerrar-modal').click();
+            return Swal.fire({
+            type: 'error',
+            title: 'Ha habido un error al crear el territorio',
+            text: '',
+          }).then(()=>{
+            form.reset();
+          })
+        }
+      })
+    })
+  }
+
 }
 
 

@@ -8,12 +8,16 @@ class Login_register extends CI_Controller {
 			parent::__construct();
 			$this->load->model('Login_model');
 		}
-	/* Este metodo es llamado desde el archivo de CDN/JS/login.js y el metodo secret_key() de forma asincrona por medio de fetch().Con el comprobamos la clave secreta para poder dar permiso al usuario y que acceda a la pagina de registro**/
+	/**
+	Este metodo es llamado desde el archivo de CDN/JS/login.js y el metodo secret_key() de forma asincrona por medio de fetch().Con el comprobamos la clave secreta para poder dar permiso al usuario y que acceda a la pagina de registro
+	**/
 	function comprobarKey(){
 		if($this->input->post("key")){
 			$key = $this->Login_model->secret_key($this->input->post("key"));
 			if($key){ 
-				/**CREAMOS UNA COOKIE PARA PROTEGER LA RUTA Y QUE NO SE PUEDA ACCEDER POR LA URL. ESTA COOKIE SE COMPRUEBA DESDE LOS HOOCK config/hoocks.php**/
+				/**
+				CREAMOS UNA COOKIE PARA PROTEGER LA RUTA Y QUE NO SE PUEDA ACCEDER POR LA URL. ESTA COOKIE SE COMPRUEBA DESDE LOS HOOCK config/hoocks.php
+				**/
 				$this->load->library('Cookie_valid');
 				$this->cookie_valid->create_cookie_valid();
 				echo json_encode($key);
@@ -22,7 +26,9 @@ class Login_register extends CI_Controller {
 				}
 		}
 	}
-	/**Funcion llamada desde CDN/JS/login.js y el metodo login_User() de forma asincrona por medio de fetch() y con el procedemos a verificar al usuario*/
+	/**
+	Funcion llamada desde CDN/JS/login.js y el metodo login_User() de forma asincrona por medio de fetch() y con el procedemos a verificar al usuario
+	**/
 
 	function login(){
 		$postdata = file_get_contents("php://input");
@@ -45,11 +51,15 @@ class Login_register extends CI_Controller {
 			echo json_encode($validacion);
 		}
 	}
-	/**Funcion llamada desde CDN/JS/login.js y el metodo register_user() de forma asincrona por medio de fetch() y con el procedemos a registrar al usuario*/
+	/**
+	Funcion llamada desde CDN/JS/login.js y el metodo register_user() de forma asincrona por medio de fetch() y con el procedemos a registrar al usuario
+	**/
 	function registro(){
 		$postdata = file_get_contents("php://input");
 		$post     = json_decode($postdata);
-		/**USAMOS LA LIBRERIA QUE HEMOS CREADO PARA ENCRIPTAR EL PASSWORD QUE HEMOS RECOGIDO**/
+		/**
+		USAMOS LA LIBRERIA QUE HEMOS CREADO PARA ENCRIPTAR EL PASSWORD QUE HEMOS RECOGIDO
+		**/
 		$this->load->library("Encrypt_object");
 		$pass = $this->encrypt_object->encryptpass($post->password,$post->passwordvalidatte);
 		if(!$pass){
@@ -64,7 +74,9 @@ class Login_register extends CI_Controller {
 			}
 		}
 	}
-	/**FUNCION PARA MANDAR EMAIL DE VALIDACION DE LA CUENTA CREADA.ESTA FUNCION LA LLAMAMOS DESDE registro() en este mismo controlador**/
+	/**
+	FUNCION PARA MANDAR EMAIL DE VALIDACION DE LA CUENTA CREADA.ESTA FUNCION LA LLAMAMOS DESDE registro() en este mismo controlador
+	**/
 	private function send_email_validate($valores){
 		$this->load->library("Myphpmailer");
 		$this->myphpmailer->email_validacion_cuenta($valores['email'],$valores['id'],$valores['nombre'],$valores['apellidos'],$valores['nombre_congregacion']);

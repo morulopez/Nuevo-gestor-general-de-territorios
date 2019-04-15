@@ -72,6 +72,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 			<div class="row">
+				<div class="col-md-6 text-left">
+					<button type="button" class="btn btn-warning botonasignar"><i class="fas fa-user-plus"></i>Asignar territorio</button>
+				</div>
+				<div class="col-md-6 text-right">
+					<button type="button" class="btn btn-warning botonbaja"><i class="fas fa-trash"></i>Dar de baja este publicador</button>
+				</div>
 				<div id="erroremail">
 				</div>
 			</div>

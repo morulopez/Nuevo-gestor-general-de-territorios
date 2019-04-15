@@ -55,4 +55,5 @@ $route['registrarse'] ='Inicio_territorios/pagina_registro';
 $route['login'] ='Inicio_territorios/login';
 $route['mi_perfil'] ='Inicio_territorios/inicio';
 $route['publicadores/(:num)'] = 'Publicadores/req_publicadores/$1';
+$route['territorios'] = 'Inicio_territorios/territorios';
 $route['translate_uri_dashes'] = FALSE;

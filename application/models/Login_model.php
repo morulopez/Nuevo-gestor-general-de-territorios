@@ -62,7 +62,7 @@ class Login_model extends CI_Model{
 			$datos = $this->db->insert('congregaciones',$array_insert_congregacion);
 
 			/**recogemos el ultimo dato ingresado de la congregacion**/
-			$conseguir_id_congregacion = $this->db->select('id')->order_by('id')->limit(1)->get('congregaciones');
+			$conseguir_id_congregacion = $this->db->select('id')->order_by('id desc')->limit(1)->get('congregaciones');
 			$conseguir_id_congregacion = $conseguir_id_congregacion->row_array();
 
 			/*ingresamos los datos del usuario con el id_congregacion*/
@@ -88,7 +88,7 @@ class Login_model extends CI_Model{
 
 			/**Ahora seleccionamos los datos del usuario que hemos ingresado con un left join para sacar el nombre de la congregacion**/
 			$datos_user = $this->db->select('administrador.id,administrador.nombre,administrador.apellidos,administrador.email,congregaciones.nombre as nombre_congregacion')
-				   ->join('congregaciones', 'congregaciones.ID = administrador.ID_congregacion','left')->order_by('id')->limit(1)->get('administrador');
+				   ->join('congregaciones', 'congregaciones.ID = administrador.ID_congregacion','left')->order_by('id desc')->limit(1)->get('administrador');
 			$datos_user = $datos_user->row_array();
 			/**llamamos a la libreria de encryptacion y encriptamos la password de seguridad de validacion y procedemos a insertarla en la base de datos**/
 			$this->load->library('Encrypt_object');

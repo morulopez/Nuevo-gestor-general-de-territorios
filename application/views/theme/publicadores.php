@@ -12,8 +12,8 @@ if($this->uri->segment(2)<1){
 </script>
 
 <div class="col-md-3">
-	<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-		<div class="divagregar"><i class="fas fa-user-tie"></i><a href="#modal_add_publicadores"><span>Agregar publicador</span></a></div>
+	<nav class="navbar navbar-light">
+		<div class="divagregar divagregartop"><i class="fas fa-user-tie"></i><a href="#modal_add_publicadores"><span class="divagregartopancor">Agregar publicador</span></a></div>
 	</nav>
 </div>
 <div id="modal_add_publicadores" class="modal_add_publicadores">
@@ -80,7 +80,7 @@ if($this->uri->segment(2)<1){
 		<div class="content_modal_publicadores">
 			<div class="row">
 				<div class="col-md-12 text-right cerrarmodal">
-					<a href="#" class="close-modal" id="cerrar-modal">X</a>
+					<a href="#" class="close-modal" id="cerrar-modal" onclick="ReqDatos.load_again_publicadores()">X</a>
 				</div>
 			</div>
 				<!--En esta ventana modal se muestra los datos de un publicador en concreto,llamamos a una vista por Ajax y se carga en la ventana modal,al pulsar el boton que esta escrito en la funcion de javascript (ReqDatos.req_publicadores();)-->
