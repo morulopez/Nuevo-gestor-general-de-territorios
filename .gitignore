@@ -1,6 +1,7 @@
 .DS_Store
 
 application/cache/*
+application/libraries/secretcloud/*
 !application/cache/index.html
 
 application/logs/*

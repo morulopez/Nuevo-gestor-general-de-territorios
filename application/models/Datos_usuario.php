@@ -82,7 +82,7 @@ function req_datos_publicadores($pagina){
 	$numero_filas  = $publicadores->num_rows();
 	$total_paginas = ceil($numero_filas/$tamaño_pagina);
 	$empezar_desde = ($pagina-1)*$tamaño_pagina;
-	$result_publicadores=$this->db->select('publicadores.id,publicadores.nombre,publicadores.apellidos,publicadores.email,publicadores.telefono,territorios.devuelta,territorios.entrega,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,territorios.entrega_campaing,territorios.devuelta_campaing,territorios.ID_publicador,territorios.ID_publicador_campaing')->join('territorios','territorios.ID_publicador = publicadores.ID or territorios.ID_publicador_campaing = publicadores.ID','left')->where('publicadores.ID_congregacion',$this->session->userdata['id_congregacion'])->get('publicadores',$tamaño_pagina,$empezar_desde);
+	$result_publicadores=$this->db->select('publicadores.id,publicadores.nombre,publicadores.apellidos,publicadores.email,publicadores.telefono,territorios.devuelta,territorios.entrega,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,territorios.entrega_campaing,territorios.devuelta_campaing,territorios.ID_publicador,territorios.ID_publicador_campaing')->join('territorios','territorios.ID_publicador = publicadores.ID or territorios.ID_publicador_campaing = publicadores.ID','left')->where('publicadores.ID_congregacion',$this->session->userdata['id_congregacion'])->order_by('nombre asc')->get('publicadores',$tamaño_pagina,$empezar_desde);
 	return ["total_paginas"=>$total_paginas,"publicadores"=>$result_publicadores->result_array()];
 }
 

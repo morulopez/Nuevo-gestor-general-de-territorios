@@ -332,7 +332,7 @@ class dataUser{
       data.json().then(data => {
          document.getElementById('listdatapubli').innerHTML+=`<div class="row firstline">
           <div class="col-md-3">Nombre:</div>
-          <div class="col-md-3">Apellidos:</div>
+          <div class="col-md-3 text-center">Apellidos:</div>
           <div class="col-md-6 text-right"><i class="fas fa-circle"></i><span class="spancumplido">Publicadores con territorios cumplidos</span></div>
          </div>`;
          var datos      = data.publicadores;
@@ -357,7 +357,7 @@ class dataUser{
           if(id!=datos[key].id){
             document.getElementById('listdatapubli').innerHTML+=`<div class="row linea" id="primerdiv">
             <div class="col-md-4">${datos[key].nombre}</div>
-            <div class="col-md-4">${datos[key].apellidos}</div>
+            <div class="col-md-4 text-left">${datos[key].apellidos}</div>
             <div class="col-md-4"><a href="#modal_info_publicadores"><button type="button" onclick="ReqDatos.ver_publicador('${datos[key].id}');" class="btn btn-outline-info botonver"><i class="fas fa-eye"></i>Ver publicador</button></a></div>
            </div>`;
           }
@@ -465,7 +465,7 @@ class territorios{
   /*Con esta funcion cambiamos el elemento de html para ponerlo en forma de carga */
   function_Cargando(elemento){
      if(this.cargando){
-        return elemento.innerHTML = "<span class='cargaterri'>Cargando...<i class='fa fa-spinner fa-spin' style='font-size:30px'></i></span>";
+        return elemento.innerHTML = "<span class='cargaterri'>Creando territorio...<i class='fa fa-spinner fa-spin' style='font-size:30px'></i></span>";
      }
         elemento.innerHTML = "";
   }
@@ -493,7 +493,6 @@ class territorios{
      body:formData
     }).then(resp => {
       resp.json().then(resj=>{
-        console.log(resj);
         if(resj==='Este numero de territorio ya tiene esta zona asignada, cambia el numero o la zona por favor'){
           this.cargando=false;
           this.function_Cargando(document.getElementById('divcargaterritorios'));
@@ -509,10 +508,11 @@ class territorios{
             text: 'El territorio se ha creado correctamente',
           }).then(()=>{
             form.reset();
+            document.getElementById('nombreimg').innerHTML='';
             document.getElementById('errorterritorios').innerHTML='';
-            /*document.getElementById('listdatapubli').innerHTML   ='';
-            document.getElementById('paginationpubli').innerHTML ='';*/
-            //this.req_publicadores(this.numpage);
+            document.getElementById('listdatapubli').innerHTML   ='';
+            document.getElementById('paginationpubli').innerHTML ='';
+            this.req_territorios();
           });
         }
         if(!resj){
@@ -527,6 +527,63 @@ class territorios{
         }
       })
     })
+  }
+  req_territorios(){
+    let obj = {"numpage": this.numpage};
+    fetch(`${this.url}/territorios/req_all_territorios`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then( data => {
+      data.json().then(data => {
+         document.getElementById('listdatapubli').innerHTML+=`<div class="row firstline">
+          <div class="col-md-3">Numero:</div>
+          <div class="col-md-3 text-center">Zona:</div>
+          <div class="col-md-6 text-right"><i class="fas fa-circle asignado"></i><span class="spancumplido">Asignado</span><i class="fab fa-cuttlefish asignadocampaña"></i><span class="spancumplido">Asignado en campaña</span></div>
+         </div>`;
+         var datos           = data.territorios;
+         var pagination      = data.total_paginas;
+         var asig_campaing   ='';
+         var asig            ='';
+        for(var key in datos){
+    
+          if(datos[key].asignado!=false){
+            asig ='<i class="fas fa-circle asignado"></i>';
+          }
+          if(datos[key].asignado_campaing!=false){
+            asig_campaing ='<i class="fab fa-cuttlefish asignadocampaña"></i>';
+          }
+            document.getElementById('listdatapubli').innerHTML+=`<div class="row linea" id="primerdiv">
+            <div class="col-md-4">${datos[key].numero_territorio}</div>
+            <div class="col-md-4">${datos[key].zona} ${asig}${asig_campaing}</div>
+            <div class="col-md-4"><a href="#modal_info_territorios"><button type="button" onclick="ReqDatosTerri.req_info_terri('${datos[key].id}');" class="btn btn-outline-info botonver"><i class="fas fa-eye"></i>Ver territorio</button></a></div>
+           </div>`;
+           asig_campaing   ='';
+           asig            ='';
+        }
+        for(var i=1;i<=pagination;i++){
+            document.getElementById('paginationpubli').innerHTML+=`<a class="page-link" href="${this.url}/publicadores/${i}">${i}</a>`
+        }
+      });
+    });
+  }
+  req_info_terri(id){
+    console.log(id);
+    let obj={"id":id};
+    fetch(`${this.url}/Territorios/info_territorio`,{
+       method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded' 
+      }}).then( res => {
+          res.json().then( respuesta => {
+            document.getElementById('show_info_territorios').innerHTML= respuesta
+          })
+      })
   }
 
 }

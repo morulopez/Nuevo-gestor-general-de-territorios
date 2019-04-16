@@ -31,4 +31,17 @@ class Territorios extends CI_Controller {
 		}
 
 	}
+	function req_all_territorios(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		$res      = $this->Territorios_model->req_datos_territorios($post->numpage);
+		echo json_encode($res);
+	}
+	function info_territorio(){
+		$postdata    = file_get_contents("php://input");
+		$post        = json_decode($postdata);
+		//$datos_publi = $this->Territorios_model->info_territorio($post->id);
+		echo json_encode($this->load->view("theme/info_territorio.php",["id" => $this->session->userdata['id']
+	                                                                    /*"datos_territorio" => $datos_terri*/],true));
+	}
 }

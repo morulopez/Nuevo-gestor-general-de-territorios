@@ -8,9 +8,8 @@ class Territorios_model extends CI_Model{
 			return false;
 		}
 		$zona=strtolower($zona);
-		$comprobar_numero  = $this->db->select('territorios.numero_territorio,zona.zona')->join('zona', 'zona.ID_territorio = territorios.ID','left')->where('territorios.numero_territorio',$numero_terri)->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->get('territorios');
-		$comprobar_numero = $comprobar_numero->row_array();
-		if($comprobar_numero['numero_territorio'] == $numero_terri && $comprobar_numero['zona'] == $zona){
+		$comprobar_numero  = $this->db->select('territorios.numero_territorio,zona.zona')->join('zona', 'zona.ID_territorio = territorios.ID','left')->where('territorios.numero_territorio',$numero_terri)->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->where('zona.zona',$zona)->get('territorios');
+		if($comprobar_numero->num_rows()>0){
 			return 'Este numero de territorio ya tiene esta zona asignada, cambia el numero o la zona por favor';
 		}
 		$territorio      = ['ID_congregacion'=>$this->session->userdata['id_congregacion'],
@@ -34,6 +33,15 @@ class Territorios_model extends CI_Model{
 		$img = $this->db->set($array)->where('ID',$id)->update('territorios');
 		return $img;
 
+	}
+	function req_datos_territorios($pagina){
+		$tamaño_pagina = 10;
+		$territorios  = $this->db->select('territorios.id,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,zona.zona')->join('zona','zona.ID_territorio = territorios.ID','left')->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->get('territorios');
+		$numero_filas  = $territorios->num_rows();
+		$total_paginas = ceil($numero_filas/$tamaño_pagina);
+		$empezar_desde = ($pagina-1)*$tamaño_pagina;
+		$result_territorios=$this->db->select('territorios.id,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,zona.zona')->join('zona','zona.ID_territorio = territorios.ID','left')->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->order_by('zona asc')->get('territorios',$tamaño_pagina,$empezar_desde);
+		return ["total_paginas"=>$total_paginas,"territorios"=>$result_territorios->result_array()];
 	}
 
 }

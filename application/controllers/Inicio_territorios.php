@@ -17,6 +17,10 @@ class Inicio_territorios extends CI_Controller {
 	function Login(){
 		$this->load->view("login.php");
 	}
+	function cerrar_sesion(){
+		$this->session->sess_destroy();
+		redirect('login');
+	}
 
 	function pagina_registro(){
 		$this->load->view("registro.php");

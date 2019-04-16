@@ -42,7 +42,7 @@
 						<ul class="sidebarli">
 							<a href="<?php echo site_url('mi_perfil')?>"><li id="mi_perfil"><i class="far fa-smile"></i><span>Mi perfil</span></li></a>
 							<a href="<?php echo site_url('publicadores')."/1";?>"><li id="publicadores"><i class="fas fa-address-card"></i><span>Publicadores</span></li></a>
-							<a href="<?php echo site_url('territorios')?>"><li id="territorios"><i class="fas fa-globe"></i><span>Territorios</span></li></a>
+							<a href="<?php echo site_url('territorios')."/1";?>"><li id="territorios"><i class="fas fa-globe"></i><span>Territorios</span></li></a>
 							<a href="<?php echo site_url('campañas')?>"><li id="campañas"><i class="fas fa-bullhorn"></i><span>Campañas</span></li></a>
 							<li id="alertas"><i class="far fa-bell ale"></i><span>Alertas</span></li>
 							<li id="videos_tutoriales"><i class="fas fa-play"></i><span>Videos tutoriales</span></li>
@@ -66,7 +66,7 @@
 						</div>
 					</div>
 					<div class="col-md-2">
-						<span class="soporte crerrarsesion">Cerrar sesion |</span>
+						<a href='<?php echo site_url("cerrar_sesion")?>' class="acerrarsesion"><span class="soporte crerrarsesion">Cerrar sesion |</span></a>
 						<span class="soporte" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Soporte tecnico</span>
 						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						  <div class="modal-dialog" role="document">

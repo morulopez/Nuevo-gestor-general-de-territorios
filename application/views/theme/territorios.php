@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-/*$mas=$this->uri->segment(2)+1;
+$mas=$this->uri->segment(2)+1;
 $menos=$this->uri->segment(2)-1;
 if($this->uri->segment(2)<1){
-	redirect(site_url('publicadores/1'));
-}*/
+	redirect(site_url('territorios/1'));
+}
 ?>
 <script>
 	let ReqDatosTerri = new territorios('<?php echo URL; ?>','<?php echo $id;?>','<?php echo $this->uri->segment(2); ?>');
-	//ReqDatos.req_publicadores();
+	ReqDatosTerri.req_territorios();
 </script>
 
 <div class="col-md-3">
@@ -31,6 +31,10 @@ if($this->uri->segment(2)<1){
 					    <input type="number" class="form-control" id="numero" aria-describedby="emailHelp" placeholder="Numero de territorio">
 					</div>
 					<div class="form-group">
+					    <label for="zona">Zona del territorio:</label>
+					    <input type="text" class="form-control" id="zona" aria-describedby="emailHelp" placeholder="Zona del territorio">
+					</div>
+					<div class="form-group">
 					    <label for="img">Imagen:</label><br>
 					    <input type="file" class="inputfile" id="contefile" aria-describedby="emailHelp">
 					    <button type="button" class="botonimag" onclick="ReqDatosTerri.activarFile();"><i class="fas fa-images"></i>Agregar Imagen</button><span id="nombreimg"></span>
@@ -39,10 +43,6 @@ if($this->uri->segment(2)<1){
 					    		document.getElementById('nombreimg').innerHTML= document.getElementById('contefile').files[0].name;
 					    	})
 					    </script>
-					</div>
-					<div class="form-group">
-					    <label for="zona">Zona del territorio:</label>
-					    <input type="text" class="form-control" id="zona" aria-describedby="emailHelp" placeholder="Zona del territorio">
 					</div>
 					  <div class="row">
 					  	<div class="col-md-6 text-left">
@@ -64,7 +64,7 @@ if($this->uri->segment(2)<1){
 				<!--En este div (<div id="listdatapubli">) mostramos a tods los publicadores de su respectiva congregacion lo hacemos a traves de la funcion de javascript (ReqDatos.req_publicadores();) cargada arriba-->
 				<div id="listdatapubli">
 				</div>
-				<!--<div>
+				<div>
 					<nav aria-label="Page navigation example">
 					  <ul class="pagination">
 					  	<li class="page-item">
@@ -81,7 +81,7 @@ if($this->uri->segment(2)<1){
 					    </li>
 					  </ul>
 					</nav>
-				</div>-->
+				</div>
 			</div>
 		</div>
 	</div>
@@ -89,8 +89,9 @@ if($this->uri->segment(2)<1){
 		<div class="content_modal_territorios">
 			<div class="row">
 				<div class="col-md-12 text-right cerrarmodal">
-					<a href="#" class="close-modal" id="cerrar-modal" onclick="ReqDatosTerri.load_again_territorios()">X</a>
+					<a href="#" class="close-modal" id="cerrar-modal">X</a>
 				</div>
+				<!--onclick="ReqDatosTerri.load_again_territorios()"-->
 			</div>
 				<!--En esta ventana modal se muestra los datos de un territorio en concreto,llamamos a una vista por Ajax y se carga en la ventana modal,al pulsar el boton que esta escrito en la funcion de javascript (ReqDatosTerri.req_territorios();)-->
 			<div class="row">
