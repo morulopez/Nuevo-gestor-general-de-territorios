@@ -260,6 +260,7 @@ body{
 	font-weight: 900;
 	margin-left: 20px;
 }
+
 .linea{
 	margin-top: 5px;
 	padding: 5px;
@@ -436,4 +437,77 @@ body{
 .asignadocampaña{
 	color:#e5a206;
 	margin-left: 15px;
+}
+/**INFO TERRITORIO**/
+.infoterri{
+	color:#979da8;
+	font-weight: 900;
+	margin-left: 15px;
+}
+.infoterri1{
+	color:#474849;
+	font-weight: 600;
+}
+.primerainfo{
+	padding:10px;
+	border-radius: 5px;
+	border:1px solid #bae2d6;
+}
+.fa-times-circle{
+	font-size: 150px;
+	color:#e2bac0; 
+}
+.divimg{
+	padding: 10px;
+	background-color: #eaebf2;
+	border-radius: 5px;
+}
+.divobservaciones{
+	text-transform: none !important;
+	background-color: #eaebf2;
+	margin-left: 10px;
+	padding: 10px;
+}
+.showbutton{
+	margin-top: 15px;
+}
+.showobser{
+	background-color:#036b33 !important;
+	border:2px solid #036b33 !important;
+	color:#fff !important;
+}
+.showobser:hover{
+	background-color:#fff !important;
+	border:2px solid #036b33 !important;
+	color:#036b33!important;
+}
+.showhistorial{
+	background-color: #6b0354!important;
+	border:2px solid #6b0354!important;
+	color:#fff!important;
+}
+.showhistorial:hover{
+	background-color: #fff!important;
+	border:2px solid #6b0354!important;
+	color:#6b0354!important;
+}
+.lineaobservaciones,.lineacrearobservaciones{
+	display: none;
+}
+
+.circlecerrar{
+	font-size: 40px;
+	color:#e2bac0; 
+	cursor: pointer;
+}
+
+textarea{
+	width: 100%;
+	resize:vertical;
+	min-height: 100px;
+	max-height: 300px;
+	padding:20px;
+}
+textarea:focus{
+	border:2px solid #036b33;
 }

@@ -53,7 +53,7 @@ ID_publicador_campaind INT(20) NULL,
 asignado_campaing 	TINYINT(1) NOT NULL DEFAULT '0',
 entrega_campaing 	VARCHAR(10),
 devuelta_campaing 	VARCHAR(10),
-FOREIGN KEY (ID_publicador) REFERENCES congregaciones(ID) ON DELETE CASCADE
+FOREIGN KEY (ID_congregacion) REFERENCES congregaciones(ID) ON DELETE CASCADE
 );
 
 CREATE TABLE zona(

@@ -40,8 +40,14 @@ class Territorios extends CI_Controller {
 	function info_territorio(){
 		$postdata    = file_get_contents("php://input");
 		$post        = json_decode($postdata);
-		//$datos_publi = $this->Territorios_model->info_territorio($post->id);
-		echo json_encode($this->load->view("theme/info_territorio.php",["id" => $this->session->userdata['id']
-	                                                                    /*"datos_territorio" => $datos_terri*/],true));
+		$datos_terri = $this->Territorios_model->info_territorio($post->id);
+		echo json_encode($this->load->view("theme/info_territorio.php",["id" => $this->session->userdata['id'],
+	                                                                    "datos_territorio" => $datos_terri],true));
+	}
+	function borrarObservacion(){
+		if($this->input->post('id')){
+			$delete=$this->Territorios_model->borrar_observacion($this->input->post('id'));
+			echo json_encode($delete);
+		}
 	}
 }

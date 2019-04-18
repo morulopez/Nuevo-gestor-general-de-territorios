@@ -40,8 +40,17 @@ class Territorios_model extends CI_Model{
 		$numero_filas  = $territorios->num_rows();
 		$total_paginas = ceil($numero_filas/$tamaño_pagina);
 		$empezar_desde = ($pagina-1)*$tamaño_pagina;
-		$result_territorios=$this->db->select('territorios.id,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,zona.zona')->join('zona','zona.ID_territorio = territorios.ID','left')->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->order_by('zona asc')->get('territorios',$tamaño_pagina,$empezar_desde);
+		$result_territorios=$this->db->select('territorios.id,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,zona.zona')->join('zona','zona.ID_territorio = territorios.ID','left')->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->order_by('numero_territorio asc')->order_by('zona asc')->get('territorios',$tamaño_pagina,$empezar_desde);
 		return ["total_paginas"=>$total_paginas,"territorios"=>$result_territorios->result_array()];
+	}
+	function info_territorio($id){
+		$territorio = $this->db->select('territorios.ID,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,territorios.imagen,territorios.entrega,territorios.devuelta,territorios.entrega_campaing,territorios.devuelta_campaing,zona.zona,observaciones.ID as idobservaciones,observaciones.observacion,observaciones.creado,historial.ID as idhistorial,historial.obser_historial,historial.creado as historialcreado,publicadores.nombre,publicadores.apellidos')->join('zona', 'zona.ID_territorio = territorios.ID','left')->join('observaciones','observaciones.ID_territorio = territorios.ID','left')->join('historial','historial.ID_territorio = territorios.ID','left')->join('publicadores','publicadores.ID = territorios.ID_publicador or publicadores.ID = territorios.ID_publicador_campaing','left')->where('territorios.ID',$id)->get('territorios');
+		$territorio = $territorio->result_array();
+		return $territorio;
+	}
+	function borrar_observacion($id){
+		$delete=$this->db->where('ID', $id)->delete('observaciones');
+		return $delete;
 	}
 
 }

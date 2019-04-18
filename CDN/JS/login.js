@@ -496,6 +496,7 @@ class territorios{
         if(resj==='Este numero de territorio ya tiene esta zona asignada, cambia el numero o la zona por favor'){
           this.cargando=false;
           this.function_Cargando(document.getElementById('divcargaterritorios'));
+          document.getElementById('nombreimg').innerHTML='';
           return document.getElementById('errorterritorios').innerHTML=resj;
         }
         if(resj){
@@ -574,7 +575,7 @@ class territorios{
     console.log(id);
     let obj={"id":id};
     fetch(`${this.url}/Territorios/info_territorio`,{
-       method:"POST",
+      method:"POST",
       body:JSON.stringify(obj),
       headers:{
         'Accept':'application/JSON',
@@ -584,6 +585,41 @@ class territorios{
             document.getElementById('show_info_territorios').innerHTML= respuesta
           })
       })
+  }
+  borrarObservacion(id_terri,id){
+    fetch(`${this.url}/Territorios/borrarObservacion`,{
+      method:"POST",
+      body:`id=${id}`,
+      headers:{
+        'Content-Type':'application/x-www-form-urlencoded'
+      }
+    }).then(res =>{
+      res.json().then( respuesta =>{
+        console.log(respuesta);
+        if(respuesta){
+           const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+          Toast.fire({
+            type: 'success',
+            title: 'Observacion borrada correctamente'
+          })
+          this.req_info_terri(id_terri);
+        }
+      });
+    })
+  }
+  mostrar(mostrar){
+    document.getElementById(mostrar).style.display='block';
+  }
+  cerrarventana(cerrar){
+    document.getElementById(cerrar).style.display='none';
+  }
+  crearobservacion(){
+    console.log('vamos a crear la observacion');
   }
 
 }
