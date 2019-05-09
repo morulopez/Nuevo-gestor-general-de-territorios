@@ -45,5 +45,7 @@ class Inicio_territorios extends CI_Controller {
 		$img=$this->cloud_image->borrar_img("carpeta_prueba/congregacion/nombre_deprueba2");
 		var_dump($img);*/
 	}
+	function pruebas(){
+		}
 }
 

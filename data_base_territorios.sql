@@ -53,8 +53,12 @@ ID_publicador_campaind INT(20) NULL,
 asignado_campaing 	TINYINT(1) NOT NULL DEFAULT '0',
 entrega_campaing 	VARCHAR(10),
 devuelta_campaing 	VARCHAR(10),
+trabajado_vezultima varchar(10),
 FOREIGN KEY (ID_congregacion) REFERENCES congregaciones(ID) ON DELETE CASCADE
 );
+CREATE TABLE asignado(
+
+)
 
 CREATE TABLE zona(
 ID 					INT(30) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -106,6 +110,13 @@ ID 					INT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ID_campaing 		INT(10) NOT NULL,
 numero_territorios 	VARCHAR(10),
 territorios_predicados VARCHAR(10),
+FOREIGN KEY (ID_campaing) REFERENCES campaing(ID) ON DELETE CASCADE
+);
+CREATE TABLE control_territorios_campaing(
+ID            INT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_campaing   INT(10) NOT NULL,
+ID_territorio INT(20) NOT NULL,
+predicado     TINYINT(1) NOT NULL DEFAULT '0',
 FOREIGN KEY (ID_campaing) REFERENCES campaing(ID) ON DELETE CASCADE
 );
 

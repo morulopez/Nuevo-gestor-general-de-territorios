@@ -57,4 +57,5 @@ $route['mi_perfil'] ='Inicio_territorios/inicio';
 $route['cerrar_sesion'] ='Inicio_territorios/cerrar_sesion';
 $route['publicadores/(:num)'] = 'Publicadores/req_publicadores/$1';
 $route['territorios/(:num)'] = 'Inicio_territorios/territorios';
+$route['campaing'] = 'Campaings/mis_campaing';
 $route['translate_uri_dashes'] = FALSE;

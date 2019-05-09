@@ -118,8 +118,12 @@ class Publicadores extends CI_Controller {
 		$postdata    = file_get_contents("php://input");
 		$post        = json_decode($postdata);
 		$datos_publi = $this->Datos_usuario->info_user($post->id);
+		$this->load->model('Campaings_model');
+		$comprobar_campaing = $this->Campaings_model->req_campaing();
 		echo json_encode($this->load->view("theme/info_publicador.php",["id" => $this->session->userdata['id'],
-	                                                                    "datos_publicador" => $datos_publi],true));
+	                                                                    "datos_publicador" => $datos_publi,
+	                                                                    "campaingdata"  => $comprobar_campaing
+	                                                                   ],true));
 	}
 	/**
 	Esta funcion la llamamos mediante CDN/JS/login.js y el objeto (dataUser.update_publicador()).
@@ -146,6 +150,31 @@ class Publicadores extends CI_Controller {
 				$data_update = $this->Datos_usuario->update_publicador('telefono',$post->telefono,$post->id_publicador);
 				echo json_encode($data_update);
 			}
+	}
+	/**Funcion para asignar territorio al publicador**/
+	function asignarterritorio(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		$asignado = $this->Datos_usuario->asignarterritorio($post);
+		echo json_encode($asignado);
+	}
+	/**Funcion para devolver los territorios**/
+	function devolver_terri_servicio(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		$devuelto = $this->Datos_usuario->devolver_terri_servicio($post);
+		echo json_encode($devuelto);
+	}
+	function eliminar_publicador(){
+		if($this->input->post('id')){
+			$borrado = $this->Datos_usuario->eliminarusuario($this->input->post('id'));
+			echo json_encode($borrado);
+		}
+	}
+	function pru(){
+		$territorios = $this->db->select('ID')->where("ID_congregacion",$this->session->userdata['id_congregacion'])->get("territorios");
+		$numero = $territorios->num_rows();
+		echo $numero;
 	}
 
 }

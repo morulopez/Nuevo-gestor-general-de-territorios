@@ -7,7 +7,6 @@
 	<!--MIS ESTILOS-->
 	<link rel="stylesheet" href="<?php echo CDN;?>/CSS/estilos.css">
 	<script src="<?php echo CDN;?>/JS/login.js"></script>
-
 	<!--LIBRERIA FONTAWESOME-->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
@@ -16,9 +15,6 @@
 	<script src="<?php echo CDN;?>/bootstrap/js/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="<?php echo CDN;?>/bootstrap/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="<?php echo CDN;?>/bootstrap/css/bootstrap.min.css">
-
-	<!--Libreria CHART.JS-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
 	<!--Libreria sweetalert2-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 	<script>
@@ -43,7 +39,7 @@
 							<a href="<?php echo site_url('mi_perfil')?>"><li id="mi_perfil"><i class="far fa-smile"></i><span>Mi perfil</span></li></a>
 							<a href="<?php echo site_url('publicadores')."/1";?>"><li id="publicadores"><i class="fas fa-address-card"></i><span>Publicadores</span></li></a>
 							<a href="<?php echo site_url('territorios')."/1";?>"><li id="territorios"><i class="fas fa-globe"></i><span>Territorios</span></li></a>
-							<a href="<?php echo site_url('campañas')?>"><li id="campañas"><i class="fas fa-bullhorn"></i><span>Campañas</span></li></a>
+							<a href="<?php echo site_url('campaing')?>"><li id="campaing"><i class="fas fa-bullhorn"></i><span>Campañas</span></li></a>
 							<li id="alertas"><i class="far fa-bell ale"></i><span>Alertas</span></li>
 							<li id="videos_tutoriales"><i class="fas fa-play"></i><span>Videos tutoriales</span></li>
 						</ul>
@@ -100,8 +96,12 @@
 				</div>
 				<div class="row conteprincipal">
 					<?php echo $contenido; ?>
-					<!--<canvas id="myChart"></canvas>
-	<script>
+					<!--Libreria CHART.JS-->
+<!--<script src="<?php echo CDN;?>/JS/Chart.js"></script>
+	
+<canvas id="myChart"></canvas>
+
+	<script type="text/javascript">
 		data = {
     datasets: [{
         data: [40, 60],

@@ -6,7 +6,8 @@ if($this->uri->segment(2)<1){
 	redirect(site_url('territorios/1'));
 }
 ?>
-<script>
+<script src="<?php echo CDN;?>/JS/territorios.js"></script>
+<script type="text/javascript">
 	let ReqDatosTerri = new territorios('<?php echo URL; ?>','<?php echo $id;?>','<?php echo $this->uri->segment(2); ?>');
 	ReqDatosTerri.req_territorios();
 </script>
@@ -37,12 +38,7 @@ if($this->uri->segment(2)<1){
 					<div class="form-group">
 					    <label for="img">Imagen:</label><br>
 					    <input type="file" class="inputfile" id="contefile" aria-describedby="emailHelp">
-					    <button type="button" class="botonimag" onclick="ReqDatosTerri.activarFile();"><i class="fas fa-images"></i>Agregar Imagen</button><span id="nombreimg"></span>
-					    <script>
-					    	document.getElementById('contefile').addEventListener('change',()=>{
-					    		document.getElementById('nombreimg').innerHTML= document.getElementById('contefile').files[0].name;
-					    	})
-					    </script>
+					    <button type="button" class="botonimag" onclick="ReqDatosTerri.activarFile('contefile','nombreimg');"><i class="fas fa-images"></i>Agregar Imagen</button><span id="nombreimg"></span>
 					</div>
 					  <div class="row">
 					  	<div class="col-md-6 text-left">
@@ -68,14 +64,14 @@ if($this->uri->segment(2)<1){
 					<nav aria-label="Page navigation example">
 					  <ul class="pagination">
 					  	<li class="page-item">
-					      <a class="page-link" href="<?php echo site_url('publicadores/'.$menos);?>" aria-label="Previous">
+					      <a class="page-link" href="<?php echo site_url('territorios/'.$menos);?>" aria-label="Previous">
 					        <span aria-hidden="true">&laquo;</span>
 					      </a>
 					    </li>
 					    <li id="paginationpubli">
 						</li>
 						<li class="page-item">
-					      <a class="page-link" href="<?php echo site_url('publicadores/'.$mas) ?>" aria-label="Next">
+					      <a class="page-link" href="<?php echo site_url('territorios/'.$mas) ?>" aria-label="Next">
 					        <span aria-hidden="true">&raquo;</span>
 					      </a>
 					    </li>

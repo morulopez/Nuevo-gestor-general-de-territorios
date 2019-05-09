@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<script src="<?php echo CDN;?>/JS/usuarios.js"></script>
 <script>
 	let ReqDatos = new dataUser('<?php echo URL; ?>','<?php echo $id; ?>');
 	window.onload = ReqDatos.dataUserAdmin();

@@ -6,6 +6,7 @@ if($this->uri->segment(2)<1){
 	redirect(site_url('publicadores/1'));
 }
 ?>
+<script src="<?php echo CDN;?>/JS/usuarios.js"></script>
 <script>
 	let ReqDatos = new dataUser('<?php echo URL; ?>','<?php echo $id;?>','<?php echo $this->uri->segment(2); ?>');
 	ReqDatos.req_publicadores();
