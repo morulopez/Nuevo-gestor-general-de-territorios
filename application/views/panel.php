@@ -18,8 +18,8 @@
 	<!--Libreria sweetalert2-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 	<script>
+		let Login = new login('<?php echo URL ?>');
 		window.addEventListener('load',()=>{
-			let Login = new login();
 			Login.destacar_pagina('<?php echo $this->uri->segment(1); ?>');
 		});
 	</script>
@@ -28,11 +28,6 @@
 	<div class="container-fluid">	
 		<div class="row">
 			<div class="col-md-2 col-12 col-sm-2 sidebar align-middle">
-				<div class="row">
-					<div class="col-md-12 col-sm-12 col-lg-12 divcongre text-center">
-						<span class="spancongre"> Congregación <?php echo ucwords($congregacion); ?></span>
-					</div>
-				</div>
 				<div class="row">
 					<div class="col-md-12 col-12 col-lg-12">
 						<ul class="sidebarli">
@@ -49,12 +44,9 @@
 			<div class="col-md-10 col-12 col-sm-10">
 				<div class="row text-right divnav">
 					<div class="col-md-8 col-12 text-left">
-						<nav class="navbar  navegador text-left">
-			  				<form class="form-inline">
-							    <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
-							    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-							</form>
-						</nav>
+						<div class="divcongre">
+							<span class="spancongre"> Congregación <?php echo ucwords($congregacion); ?></span>
+						</div>
 					</div>
 					<div class="col-md-2 infousuario text-left">
 						<div class="usermenu">
@@ -77,17 +69,19 @@
 						        <form>
 						          <div class="form-group">
 						            <label for="recipient-name" class="col-form-label">Asunto</label>
-						            <input type="text" class="form-control" id="recipient-name">
+						            <input type="text" class="form-control" id="asunto">
 						          </div>
 						          <div class="form-group">
 						            <label for="message-text" class="col-form-label">Mensaje</label>
 						            <textarea class="form-control" id="message-text"></textarea>
 						          </div>
+						          <div id="error" class="error">
+						          </div>
 						        </form>
 						      </div>
 						      <div class="modal-footer">
 						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-						        <button type="button" class="btn btn-primary">Enviar mensaje</button>
+						        <button type="button" class="btn btn-primary" onclick="Login.suport('<?php echo $this->session->userdata['email'] ?>');">Enviar mensaje</button>
 						      </div>
 						    </div>
 						  </div>

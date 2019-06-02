@@ -22,6 +22,12 @@ class Publicadores extends CI_Controller {
 		$data = $this->Datos_usuario->data_user($post->id);
 		echo json_encode($data);
 	}
+	function datos_service(){
+		if($this->input->post("id")){
+			$data = $this->Datos_usuario->service_year_info($this->input->post("id"));
+			echo json_encode($data);
+		}
+	}
 	/**
 	Esta funcion la llamamos desde CDN/JS/login.js y el objeto (dataUser.update()) y con ella actualizamos los datos del administrador. Esta funcion termina ejecutandose en la vista theme/mi_perfil.php.
 	**/
@@ -120,9 +126,12 @@ class Publicadores extends CI_Controller {
 		$datos_publi = $this->Datos_usuario->info_user($post->id);
 		$this->load->model('Campaings_model');
 		$comprobar_campaing = $this->Campaings_model->req_campaing();
+		$this->load->model('Datos_usuario');
+		$idserviceyear = $this->Datos_usuario->req_service_year();
 		echo json_encode($this->load->view("theme/info_publicador.php",["id" => $this->session->userdata['id'],
 	                                                                    "datos_publicador" => $datos_publi,
-	                                                                    "campaingdata"  => $comprobar_campaing
+	                                                                    "campaingdata"  => $comprobar_campaing,
+	                                                                    "idserviceyear" => $idserviceyear
 	                                                                   ],true));
 	}
 	/**
@@ -158,11 +167,24 @@ class Publicadores extends CI_Controller {
 		$asignado = $this->Datos_usuario->asignarterritorio($post);
 		echo json_encode($asignado);
 	}
+	function asignarterritorio_campaing(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		$asignado = $this->Datos_usuario->asignarterritorio_campaing($post);
+		echo json_encode($asignado);
+	}
 	/**Funcion para devolver los territorios**/
 	function devolver_terri_servicio(){
 		$postdata = file_get_contents("php://input");
 		$post     = json_decode($postdata);
 		$devuelto = $this->Datos_usuario->devolver_terri_servicio($post);
+		echo json_encode($devuelto);
+	}
+	/** Funcion para devolver los territorios de campaña**/
+	function devolver_territorio_campaing(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		$devuelto = $this->Datos_usuario->devolver_territorio_campaing($post);
 		echo json_encode($devuelto);
 	}
 	function eliminar_publicador(){
@@ -171,10 +193,33 @@ class Publicadores extends CI_Controller {
 			echo json_encode($borrado);
 		}
 	}
+	/**Con esta funcion buscamos los publicadores que vienen desde la vista publicadores.php a traves del archivo usuarios.js*/
+	function buscar_publi(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		$data 	  = $this->Datos_usuario->buscar_publi($post);
+		echo json_encode($data);
+	}
+	function mail_suport(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		$this->load->library('Myphpmailer');
+		$data     = $this->myphpmailer->mail_suport($post);
+		echo json_encode($data);
+	}
+	function notificar_publicador(){
+		$postdata = file_get_contents("php://input");
+		$post     = json_decode($postdata);
+		/*$this->load->library('Myphpmailer');
+		$data     = $this->myphpmailer->mail_suport($post);*/
+		echo json_encode($post);
+	}
 	function pru(){
-		$territorios = $this->db->select('ID')->where("ID_congregacion",$this->session->userdata['id_congregacion'])->get("territorios");
+		/*$territorios = $this->db->select('ID')->where("ID_congregacion",$this->session->userdata['id_congregacion'])->get("territorios");
 		$numero = $territorios->num_rows();
-		echo $numero;
+		echo $numero;*/
+		$this->load->model('Login_model');
+		$this->Login_model->new_service_year();
 	}
 
 }

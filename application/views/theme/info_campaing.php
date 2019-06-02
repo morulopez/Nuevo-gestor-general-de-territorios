@@ -34,7 +34,12 @@ foreach ($datos['control'] as $checkterri){
 				Estado : <?php echo $estado;?>
 			</div>
 			<div class="col-md-4 text-right">
-				<button type="button" class="btn btn-dark botondesactivarcampaing" onclick="Campaing.desactivarcampaing(<?php echo $datos['datos']['ID'];?>,<?php echo $check_asig;?>)"><i class="fas fa-arrow-alt-circle-down"></i>  Desactivar campaña</button>
+				<?php 
+					if($datos['datos']['activa']){ ?>
+						<button type="button" class="btn btn-dark botondesactivarcampaing" onclick="Campaing.desactivarcampaing(<?php echo $datos['datos']['ID'];?>,<?php echo $check_asig;?>)"><i class="fas fa-arrow-alt-circle-down"></i>  Desactivar campaña</button>
+					<?php }else{ ?>
+						<button type="button" class="btn btn-dark botondesactivarcampaing" onclick="Campaing.activarcampaing(<?php echo $datos['datos']['ID'];?>)"><i class="fas fa-arrow-alt-circle-down"></i>  Activar campaña</button>
+					<?php } ?>
 			</div>
 		</div>
 		<div class="row">
@@ -80,29 +85,19 @@ foreach ($datos['control'] as $checkterri){
 			</div>
 		</div>
 		<div class='first'>
-			<div class='row titlerowfirst'>
-				<div class='col-md-3 text-left'>
-					<span class='spanestadotitle'>Numero:</span>
-				</div>
-				<div class='col-md-3 text-left'>
-					<span class='spanestadotitle'>Zona:</span>
-				</div>
-				<div class='col-md-3 text-left'>
-					<span class='spanestadotitle'>Asignado:</span>
-				</div>
-				<div class='col-md-3 text-left'>
-					<span class='spanestadotitle'>Estado:</span>
-				</div>
-			</div>
 		</div>
 		<?php 
 			foreach ($datos['control'] as $control) {
-					$control['predicado'] ? $predicado = '<span class="spanactivo">Predicado</span><i class="fas fa-check"></i>' : $predicado ='<span class="spancerrado">Sin predicar</span><i class="fas fa-times spancerrado"></i>';
+					if($control['predicado']){
+						$asignado="ya trabajado";
+						 $predicado = '<span class="spanactivo">Predicado</span><i class="fas fa-check"></i>';
+					}else{
+						$predicado ='<span class="spancerrado">Sin predicar</span><i class="fas fa-times spancerrado"></i>';
+						$asignado = "Sin asignar";
+					}
 					if(!empty($control['nombre'])){
 						$asignado  = $control['nombre']." ".$control['apellidos'];
 						$predicado = '<span class="proceso">Trabajandose</span><i class="fas fa-walking trabajandose"></i>';
-					}else{
-						$asignado = "Sin asignar";
 					}
 				echo "
 				<div class='first'>

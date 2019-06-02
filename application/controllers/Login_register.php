@@ -34,7 +34,7 @@ class Login_register extends CI_Controller {
 		$postdata = file_get_contents("php://input");
 		$post     = json_decode($postdata);
 		$validacion = $this->Login_model->login($post->usuario,$post->password);
-		if(!$validacion && $validacion=='Necesitas activar tu cuenta, vaya a su correo electronico y compruebe el correo que le enviamos para activar su cuenta'){
+		if($validacion=='Necesitas activar tu cuenta, vaya a su correo electronico y compruebe el correo que le enviamos para activar su cuenta'){
 			echo json_encode($validacion);
 		}else{
 			$this->load->library('Sesion_token');

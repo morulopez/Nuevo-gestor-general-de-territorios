@@ -194,5 +194,41 @@ class login{
        document.getElementById('validationCustom08').style.borderColor     = '#dc3545';
        return false;
   }
-    
+  suport(email){
+    var asunt = document.getElementById("asunto").value;
+    var mensaje = document.getElementById("message-text").value;
+    if(asunt=="" || mensaje==""){
+      document.getElementById("error").innerHTML="Debes rellenar el asunto y mensaje";
+      return setTimeout(()=> document.getElementById("error").innerHTML="", 4000);
+    }
+    const obj={};
+    obj['asunt']   = asunt;
+    obj['mensaje'] = mensaje;
+    obj['mail']    = email;
+    fetch(`${this.url}/Publicadores/mail_suport`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then(resp=>{
+      resp.json().then(respuesta=>{
+        if(respuesta){
+          const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
+              Toast.fire({
+                type: 'success',
+                title: 'Mensaje enviado'
+              })
+              setTimeout(()=> document.querySelector('.close').click(), 2000);
+        }
+      })
+    })
+  }
+
 }

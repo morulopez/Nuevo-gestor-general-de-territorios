@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Territorios_model extends CI_Model{
 
 	function add_territorio_model($numero_terri,$zona){
+		$this->db->trans_begin();
 		if(empty($numero_terri) || empty($zona)){
 			return false;
 		}
@@ -24,11 +25,48 @@ class Territorios_model extends CI_Model{
 	                        $this->db->set($zona_terri)->insert('zona');
 
 	    $campaing=$this->comprobar_campaing();
+	    $this->comprobar_service_year($id_territorio['ID']);
 	    if($campaing){
 	    	$this->actualizar_datos_campaing($id_territorio['ID'],$campaing['ID']);
 	    }
-	    return $id_territorio['ID'];
+	    if ($this->db->trans_status() === FALSE)
+			{
+			        $this->db->trans_rollback();
+			}
+			else
+			{
+			        $this->db->trans_commit();
+			        return $id_territorio['ID'];
+			}
 
+	}
+	private function comprobar_service_year($id_territorio){
+		$service_year =$this->db->select('ID')->where('activo',1)->where('ID_congregacion',$this->session->userdata['id_congregacion'])->get('service_year');
+		$service_year = $service_year->row_array();
+		return $this->actualizar_datos_service_year($id_territorio,$service_year['ID']);
+	}
+	private function actualizar_datos_service_year($id_territorio,$id){
+		$numeroterritorios = $this->db->select('numero_territorios')->where('ID_service_year',$id)->get('datos_service_year');
+		if($numeroterritorios->num_rows()<1){
+			$array = [
+				"ID_service_year" 		 => $id,
+				"numero_territorios" 	 => 1,
+				"territorios_predicados" => 0
+			];
+			$this->db->set($array)->insert('datos_service_year');
+			$this->db->insert("control_service_year",["ID_service_year"   => $id,
+	                                                      "ID_territorio" => $id_territorio,
+	                                                      "predicado"     => 0]);
+			return true;
+		}else{
+			$numeroterritorios=$numeroterritorios->row_array();
+			$this->db->set("numero_territorios",$numeroterritorios['numero_territorios']+1)->where("ID_service_year",$id)->update('datos_service_year');
+			$this->db->insert("control_service_year",["ID_service_year"   => $id,
+	                                                      "ID_territorio" => $id_territorio,
+	                                                      "predicado"     => 0]);
+			return true;
+		}
+		
 	}
 	/**Esta funcion es por si despues decrear una campaña insertan territorios nuevos.Para que la camapaña obtenga todos los territorios insertamos el territorio ultimo creado AQUI COMPROBAMOS LA CAMPAÑA**/
 	private function comprobar_campaing(){
@@ -48,13 +86,17 @@ class Territorios_model extends CI_Model{
 	                                                      "predicado"     => 0]);
 		return true;
 	}
-	/**Esta funcion es por si despues decrear una campaña insertan territorios nuevos.Para que la camapaña obtenga todos los territorios insertamos el territorio ultimo creado AQUI ACTUALIZAMOS LA CAMPAÑA SI SE BORRAA UN TERRITORIO**/
-	private function actualizar_datos_campaing_from_delete($id_territorio,$id){
-		$numeroterritorios = $this->db->select('numero_territorios')->where('ID_campaing',$id)->get('datos_campaing');
-		$numeroterritorios=$numeroterritorios->row_array();
-		$this->db->set('numero_territorios',$numeroterritorios['numero_territorios']-1)->where("ID_campaing",$id)->update('datos_campaing');
-		$this->db->where('ID_campaing',$id)->where('ID_territorio',$id_territorio)->delete('control_territorios_campaing');
-		return true;
+	/**Esta funcion es por si despues de crear una campaña insertan territorios nuevos.Para que la camapaña obtenga todos los territorios insertamos el territorio ultimo creado AQUI ACTUALIZAMOS LA CAMPAÑA SI SE BORRAA UN TERRITORIO**/
+	private function actualizar_datos_campaing_from_delete($id_territorio,$id,$tipo){
+		if($tipo == "capaimg"){
+			$this->db->set('numero_territorios','numero_territorios-1',FALSE)->where("ID_campaing",$id)->update('datos_campaing');
+			$this->db->where('ID_campaing',$id)->where('ID_territorio',$id_territorio)->delete('control_territorios_campaing');
+			return true;
+		}elseif($tipo == "servicio" ){
+			$this->db->set('numero_territorios','numero_territorios-1',FALSE)->where("ID_service_year",$id)->update('datos_service_year');
+			$this->db->where('ID_service_year',$id)->where('ID_territorio',$id_territorio)->delete('control_service_year');
+			return true;
+		}
 	}
 	/**Funcion para añadir imagen a un territorio cuando se crea**/
 	function add_img_model($img,$id,$idcloud){
@@ -91,7 +133,7 @@ class Territorios_model extends CI_Model{
 		return ["total_paginas"=>$total_paginas,"territorios"=>$result_territorios->result_array()];
 	}
 	function info_territorio($id){
-		$territorio = $this->db->select('territorios.ID,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,territorios.imagen,territorios.entrega,territorios.devuelta,territorios.entrega_campaing,territorios.devuelta_campaing,zona.zona,publicadores.nombre,publicadores.apellidos')->join('zona', 'zona.ID_territorio = territorios.ID','left')->join('publicadores','publicadores.ID = territorios.ID_publicador or  publicadores.ID = territorios.ID_publicador_campaing','left')->where('territorios.ID',$id)->get('territorios');
+		$territorio = $this->db->select('territorios.ID,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,territorios.imagen,territorios.entrega,territorios.devuelta,territorios.entrega_campaing,territorios.devuelta_campaing,territorios.ID_publicador as id_publi,territorios.ID_publicador_campaing as id_publi_campaing,zona.zona,publicadores.ID as id_publicador,publicadores.nombre,publicadores.apellidos')->join('zona', 'zona.ID_territorio = territorios.ID','left')->join('publicadores','publicadores.ID = territorios.ID_publicador or  publicadores.ID = territorios.ID_publicador_campaing','left')->where('territorios.ID',$id)->get('territorios');
 		$territorio = $territorio->result_array();
 		$observaciones = $this->db->select('ID,observacion,creado')->where('ID_territorio',$id)->get('observaciones');
 		$observaciones = $observaciones->result_array();
@@ -104,6 +146,10 @@ class Territorios_model extends CI_Model{
 	}
 	function borrar_observacion($id){
 		$delete=$this->db->where('ID', $id)->delete('observaciones');
+		return $delete;
+	}
+	function borrar_observacion_historial($id){
+		$delete=$this->db->where('ID', $id)->delete('historial');
 		return $delete;
 	}
 	function crear_observacion($id_terri,$observacion,$fecha){
@@ -122,15 +168,18 @@ class Territorios_model extends CI_Model{
 			$this->load->library('Cloud_image');
 			$this->cloud_image->borrar_img($territorio['id_cloud']);
 		}
-		$delete = $this->db->where('ID',$id)->delete('territorios');
-		$campaing=$this->comprobar_campaing();
+		$service_year = $this->db->select("ID")->where("ID_congregacion",$this->session->userdata['id_congregacion'])->where("activo",1)->get("service_year");
+		$service_year = $service_year->row_array();
+		$this->actualizar_datos_campaing_from_delete($id,$service_year['ID'],"servicio");
+		$delete =   $this->db->where('ID',$id)->delete('territorios');
+		$campaing = $this->comprobar_campaing();
 	    if($campaing){
-	    	$this->actualizar_datos_campaing_from_delete($id,$campaing['ID']);
+	    	$this->actualizar_datos_campaing_from_delete($id,$campaing['ID'],"campaing");
 	    }
 		return $delete;
 	}
-	function req_terri_asigservicio(){
-		$territorio = $this->db->select('territorios.ID,territorios.numero_territorio,zona.zona')->join('zona','zona.ID_territorio = territorios.ID','left')->order_by('trabajado_vezultima','acs')->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->where('asignado','0')->get('territorios');
+	function req_terri_asigservicio($id){
+		$territorio = $this->db->select('territorios.ID,territorios.numero_territorio,territorios.asignado,zona.zona,control_service_year.predicado')->join('zona','zona.ID_territorio = territorios.ID','left')->join('control_service_year', 'control_service_year.ID_territorio = territorios.ID','left')->order_by('trabajado_vezultima','acs')->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->where('territorios.asignado','0')->where("control_service_year.ID_service_year",$id)->get('territorios');
 		return $territorios = $territorio->result_array();
 	}
 	function req_terri_asigscamaping($id){
@@ -162,6 +211,17 @@ class Territorios_model extends CI_Model{
 	function buscar_terri($value){
 		$territorios=$this->db->select("territorios.ID,territorios.numero_territorio,observaciones.observacion,zona.zona")->join("observaciones","observaciones.ID_territorio = territorios.ID","left")->join("zona","zona.ID_territorio = territorios.ID","left")->where("territorios.asignado",0)->like('observaciones.observacion',$value)->get("territorios");
 		return $territorios->result_array();
+	}
+	function filtrar_terri($value){
+		if(!empty($value->numero)){
+			$result_territorios = $this->db->select('territorios.id,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,zona.zona')->join('zona','zona.ID_territorio = territorios.ID','left')->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->like('zona.zona',$value->zona)->like('territorios.numero_territorio
+				',$value->numero)->or_like('zona.zona',$value->numero)->or_like('territorios.numero_territorio
+				',$value->zona)->get('territorios');
+			return $result_territorios->result_array();
+		}
+		$result_territorios = $this->db->select('territorios.id,territorios.numero_territorio,territorios.asignado,territorios.asignado_campaing,zona.zona')->join('zona','zona.ID_territorio = territorios.ID','left')->where('territorios.ID_congregacion',$this->session->userdata['id_congregacion'])->like('zona.zona',$value->zona)->or_like('territorios.numero_territorio
+				',$value->zona)->get('territorios');
+			return $result_territorios->result_array();
 	}
 
 

@@ -8,6 +8,7 @@ class Campaings_model extends CI_Model{
 		return $campaing->result_array();
 	}
 	function crear_campaing($data){
+		$this->db->trans_begin();
 		$array_campaing=[
 			"ID_congregacion"        => $this->session->userdata['id_congregacion'],
 			"nombre_campaing"        => $data->nombre,
@@ -35,7 +36,16 @@ class Campaings_model extends CI_Model{
 		                                                       " predicado"    => 0
 		                                                     ]);
 		}
-		return true;
+		if ($this->db->trans_status() === FALSE)
+			{
+			        $this->db->trans_rollback();
+			}
+			else
+			{
+			        $this->db->trans_commit();
+			       return true;
+			}
+		
 	}
 	function req_campaings_info($id){
 		$campaing_data = $this->db->select('campaing.ID,campaing.nombre_campaing,campaing.activa,campaing.fecha_apertura,campaing.fecha_cierre,campaing.observaciones_campaing,datos_campaing.numero_territorios,datos_campaing.territorios_predicados')->join('datos_campaing','datos_campaing.ID_campaing = campaing.ID','left')->where('campaing.ID',$id)->where("campaing.ID_congregacion",$this->session->userdata['id_congregacion'])->get('campaing');
@@ -52,6 +62,14 @@ class Campaings_model extends CI_Model{
 	}
 	function desactivar_campaing($id){
 		$this->db->set("activa",0)->where("ID",$id)->update("campaing");
+		return true;
+	}
+	function activar_campaing($id){
+		$comprobar=$this->db->select('activa')->where("ID_congregacion",$this->session->userdata['id_congregacion'])->where("activa",1)->get('campaing');
+		if($comprobar->num_rows()>0){
+			return "existe campaña";
+		}
+		$this->db->set("activa",1)->where("ID",$id)->update("campaing");
 		return true;
 	}
 }

@@ -52,6 +52,7 @@ class campaing{
 						this.crear_campaing();
 					}
 				})
+				console.log(exitcamactive);
 			})
 		})
 	}
@@ -75,7 +76,15 @@ class campaing{
 		}).then(res=>{
 			res.json().then(resp=>{
 				if(resp){
-
+					Swal.fire({
+						type: 'success',
+						title: 'Campaña creada con exito',
+					}).then(()=>{
+						document.getElementById('cerrar-modal').click();
+						document.getElementById('listdatapubli').innerHTML="";
+						this.req_campaing();
+						location.reload();
+					})
 				}
 			})
 		})
@@ -90,7 +99,7 @@ class campaing{
 		    }
 		}).then(resp=>{
 			resp.json().then(respuesta=>{
-				console.log(respuesta);
+				//console.log(respuesta);
 				 document.getElementById('show_info_campaing').innerHTML= respuesta.vista;
 				document.getElementById('grafico').addEventListener('click',()=>{
 					document.getElementById('chair').style.display='block';
@@ -170,12 +179,50 @@ class campaing{
 				type: 'success',
 				title: 'Campaña desactivada',
 				}).then(()=>{
-					this.req_info_campaing(id);
 					document.getElementById('listdatapubli').innerHTML="";
-					this.req_campaing();
-
+					location.reload();
+					document.getElementById('close-modal').click();
+				})
+			})
+		})
+	}
+	activarcampaing(id){
+		fetch(`${this.url}/Campaings/activar_campaing`,{
+			method:"POST",
+		    body:`id=${id}`,
+		    headers:{
+		     'Accept':'application/JSON',
+		     'Content-Type':'application/x-www-form-urlencoded'  
+		    }
+		}).then(resp=>{
+			resp.json().then(respuesta=>{
+				if(respuesta==="existe campaña"){
+					return Swal.fire({
+							type: 'error',
+							title: 'Existe una campaña activada',
+							text: 'Para activar esta campaña debes de desactivar la que está activa ahora mismo, de esta manera se llevará un mejor control de los territorios',
+							});
+				}
+				Swal.fire({
+				type: 'success',
+				title: 'Campaña Activada',
+				}).then(()=>{
+					document.getElementById('listdatapubli').innerHTML="";
+					location.reload();
+					document.getElementById('close-modal').click();
 				})
 			})
 		})
 	}
 }
+
+/**PONER BOTON PARA ACTIVAR CAMPAÑA**/
+/*TERMINAR BORRAR CAMPAÑA**/
+/**TERMINAR CREAR CAMPAÑA**/
+
+/**CREAR AÑO DE SERVICIO PARA LOS DATOS DE TERRITORIOS Y GRAFICO ETC, Y CREAR LO MISMO QUE 
+EN LA CAMPAÑAS PARA CUANDOINSERTEN ALGUN TERRITORIO QUE SE AÑADA AL AÑO DE SERVICIO Y ESTADISTICAS**/
+/*CREAR EL CONTACTO HACIA MI CORREO**/
+/** CREAR BOTONOS QUE MANDEN CORREOS DE ALERTA**/
+//* CREAR HISTORIAL DE PUBLICADOR**/
+/** CREAR PDF DE CAMPAÑAS Y AÑO DE SERVICIO**/

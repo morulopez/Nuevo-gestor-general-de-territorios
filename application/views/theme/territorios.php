@@ -12,10 +12,21 @@ if($this->uri->segment(2)<1){
 	ReqDatosTerri.req_territorios();
 </script>
 
-<div class="col-md-3">
+<div class="col-md-2">
 	<nav class="navbar navbar-light">
 		<div class="divagregar divagregartop"><i class="fas fa-window-maximize"></i><a href="#modal_add_territorios"><span class="divagregartopancor">Agregar Territorio</span></a></div>
 	</nav>
+</div>
+<div class="col-md-6">
+	<nav class="navbar  navegador">
+		<form class="form-inline" style="width:100%;">
+			<input class="form-control mr-sm-2" style="width:80%;" onkeyup="ReqDatosTerri.filtrar_territorio()"type="search" placeholder="Buscar territorio" id="filterterri" aria-label="Search">
+		</form>
+	</nav>
+</div>
+<div class="col-md-6">
+	<div id="searchterri" class="animation">
+	</div>
 </div>
 <div id="modal_add_territorios" class="modal_add_territorios">
 	<div class="content_modal">

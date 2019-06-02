@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $ci = &get_instance();
 $ci->load->library("Trabajar_fecha");
  $id_terri = $datos_territorio['territorios'][0]['ID'];
+ print_r($datos_territorio);
 ?>
 <script src="<?php echo CDN;?>/JS/territorios.js"></script>
 <script>
@@ -32,7 +33,13 @@ $ci->load->library("Trabajar_fecha");
 						<span class="infoterri1">Territorio de servicio asignado:</span><span class="infoterri">SI</span>
 					</div>
 					<div class="col-md-4 text-left">
-						<span class="infoterri1">Publicador:</span><span class="infoterri"><?php echo $datos_territorio['territorios'][0]['nombre']." ". $datos_territorio['territorios'][0]['apellidos'];?></span>
+						<span class="infoterri1">Publicador:</span><span class="infoterri"><?php 
+						if($datos_territorio['territorios'][0]['id_publi'] == $datos_territorio['territorios'][0]['id_publicador']){
+							echo $datos_territorio['territorios'][0]['nombre']." ". $datos_territorio['territorios'][0]['apellidos'];
+                          }else{
+                          	echo $datos_territorio['territorios'][1]['nombre']." ". $datos_territorio['territorios'][1]['apellidos'];
+                          }
+						?>
 					</div>
 					<?php }else{ ?>
 					<div class="col-md-4 text-left">
@@ -43,12 +50,20 @@ $ci->load->library("Trabajar_fecha");
 					<?php } ?>
 			</div>
 			<div class="row">
-					<?php if($datos_territorio['territorios'][0]['asignado_campaing'] AND $datos_territorio['territorios'][0]['asignado']==NULL){?>
+					<?php if($datos_territorio['territorios'][0]['asignado_campaing'] AND !$datos_territorio['territorios'][0]['asignado']){?>
 					<div class="col-md-4 text-left">
 						<span class="infoterri1">Territorio de campaña asignado:</span><span class="infoterri">SI</span>
 					</div>
 					<div class="col-md-4 text-left">
-						<span class="infoterri1">Publicador:</span><span class="infoterri"><?php echo $datos_territorio['territorios'][0]['nombre']." ". $datos_territorio['territorios'][0]['apellidos'];?></span>
+						<span class="infoterri1">Publicador:</span><span class="infoterri"><?php 
+							if($datos_territorio['territorios'][0]['id_publi_campaing'] == $datos_territorio['territorios'][0]['id_publicador']){
+							echo $datos_territorio['territorios'][0]['nombre']." ". $datos_territorio['territorios'][0]['apellidos'];
+                          }else{
+                          	echo $datos_territorio['territorios'][1]['nombre']." ". $datos_territorio['territorios'][1]['apellidos'];
+                          }
+						?>
+							
+						</span>
 					</div>
 					<?php }?>
 			</div>
@@ -59,14 +74,18 @@ $ci->load->library("Trabajar_fecha");
 					</div>
 					<div class="col-md-4 text-left">
 					<?php if(!empty($datos_territorio['territorios'][1]['nombre'])){
-						echo '<span class="infoterri1">Publicador:</span><span class="infoterri"> '.$datos_territorio['territorios'][1]["nombre"].' '.$datos_territorio['territorios'][1]["apellidos"].'</span>';
+						if($datos_territorio['territorios'][0]['id_publi_campaing'] == $datos_territorio['territorios'][0]['id_publicador']){
+							echo '<span class="infoterri1">Publicador:</span><span class="infoterri">'.$datos_territorio['territorios'][0]['nombre']." ". $datos_territorio['territorios'][0]['apellidos'].'</span>';
+                          }else{
+                          	echo '<span class="infoterri1">Publicador:</span><span class="infoterri">'.$datos_territorio['territorios'][1]['nombre']." ". $datos_territorio['territorios'][1]['apellidos'].'</span>';
+                          }
 						}else{
 						echo '<span class="infoterri1">Publicador:</span><span class="infoterri">'.$datos_territorio['territorios'][0]["nombre"].' '.$datos_territorio['territorios'][0]["apellidos"].'</span>';
 						}?>
 					</div>
 					<?php }?>
 					<div class="col-md-4 text-left">
-					<?php if($datos_territorio['territorios'][0]['asignado_campaing']==NULL){?>
+					<?php if(!$datos_territorio['territorios'][0]['asignado_campaing']){?>
 						<span class="infoterri1">Territorio de campaña asignado:</span><span class="infoterri">NO</span>
 					<?php } ?>
 				    </div>
@@ -148,11 +167,22 @@ $ci->load->library("Trabajar_fecha");
 					}?>
 				</div>
 			</div>
-			<!--<div class="row">
-				<div class="col-md-12 text-left">
-					<?php 
-					$observe=true;
-					if(count($datos_territorio['observaciones'])<1){
+		</div>
+	</div>
+</div>
+<div class="lineaobservaciones" id="historial">
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-10 text-left infoboxdata">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<i class="fas fa-times-circle circlecerrar" onclick="ReqDatosTerri.cerrarventana('historial')"></i>
+				</div>
+			</div>
+			<?php 
+				$observe=true;
+					if(count($datos_territorio['historial'])<1){
 						echo "<div class='row'>
 						    		<div class='col-md-12 text-center'>
 						    			<h5>Sin Historial</h5>
@@ -160,22 +190,20 @@ $ci->load->library("Trabajar_fecha");
 						    	</div>";
 					}
 					foreach ($datos_territorio['historial'] as $territorios ) {
-						if($territorios['observacion']){
+						if($territorios['obser_historial']){
 								echo "<div class='row'>
 									    <div class='col-md-2 col-sm-4 col-lg-6 divobservaciones'>
-									    	{$territorios['observacion']}
+									    	{$territorios['obser_historial']}
 									    </div>
 									    <div class='col-md-4 col-sm-6 col-lg-2 divobservaciones'>
 									    	Creada:<span class='creacion'>".$ci->trabajar_fecha->darvuelta($territorios['creado'])."</span>
 									    </div>
 									    <div class='col-md-3 col-sm-2'>
-									    	<button type='button' onclick='ReqDatosTerri.borrarObservacion({$id_terri},{$territorios['ID']})' class='btn btn-warning botonbaja botonesterri'><i class='fas fa-trash'></i>Borrar observacion</button>
+									    	<button type='button' onclick='ReqDatosTerri.borrarObservacionhistorial({$id_terri},{$territorios['ID']})' class='btn btn-warning botonbaja botonesterri'><i class='fas fa-trash'></i>Borrar observacion</button>
 									    </div>
 								</div>";
 					    }
 					}?>
-				</div>
-			</div>-->
 		</div>
 	</div>
 </div>

@@ -67,6 +67,12 @@ class Territorios extends CI_Controller {
 			echo json_encode($delete);
 		}
 	}
+	function borrarObservacionhistorial(){
+		if($this->input->post('id')){
+			$delete=$this->Territorios_model->borrar_observacion_historial($this->input->post('id'));
+			echo json_encode($delete);
+		}
+	}
 	function eliminar_terri(){
 		if($this->input->post('id')){
 			$delete_territorio=$this->Territorios_model->eliminar_territorio($this->input->post('id'));
@@ -74,8 +80,10 @@ class Territorios extends CI_Controller {
 		}
 	}
 	function obtener_terri_asig(){
-		$territorios = $this->Territorios_model->req_terri_asigservicio();
-		echo json_encode($territorios);
+		if($this->input->post('idservice')){
+			$territorios = $this->Territorios_model->req_terri_asigservicio($this->input->post('idservice'));
+			echo json_encode($territorios);
+		}
 	}
 	function obtener_terri_asig_cam(){
 		if($this->input->post('id')){
@@ -97,6 +105,12 @@ class Territorios extends CI_Controller {
 		$postdata    = file_get_contents("php://input");
 		$post        = json_decode($postdata);
 		$territorios = $this->Territorios_model->buscar_terri($post->value);
+		echo json_encode($territorios);
+	}
+	function filtrar_terri(){
+		$postdata    = file_get_contents("php://input");
+		$post        = json_decode($postdata);
+		$territorios = $this->Territorios_model->filtrar_terri($post);
 		echo json_encode($territorios);
 	}
 }

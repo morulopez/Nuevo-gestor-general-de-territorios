@@ -34,7 +34,7 @@ class Login_model extends CI_Model{
 
 		/***funcion para registrar al administrador y congregacion, esta funcion se llama desde el controlador login_register->registro()***/
 		public function register($object,$pass){
-
+			$this->db->trans_begin();
 			$datos_array = (array) $object;
 			/**validamos si los datos estan rellenos o son nulos**/
 
@@ -98,9 +98,29 @@ class Login_model extends CI_Model{
 				'claveaut'         => $claveseguraencryp
 				];
 			$this->db->insert('seguridad_validacion',$arra_clavesegura);
-
-			return $datos_user;
-
+			if(date("m") == "09" || date("m") == "10" || date("m") == "11" || date("m") == "12"){
+				$yearfinhis= date("y")+1;
+				$year = date("y")."-".date("y")+1;
+			}else{
+				$yearfinhis= date("y");
+				$year = (date("y")-1)."-".date("y");
+			}
+			$array_service_year=[
+				"ID_congregacion" => $conseguir_id_congregacion['id'],
+				"year"        	  => $year,
+				"fecha_cierre"    => $yearfinhis."-08-31",
+				"activo"          => 1
+			];
+		$this->db->insert('service_year',$array_service_year);
+			if ($this->db->trans_status() === FALSE)
+			{
+			        $this->db->trans_rollback();
+			}
+			else
+			{
+			        $this->db->trans_commit();
+			       return $datos_user;
+			}
 		}
 		public function activate_account($key,$ID_admin){
 			$select_key = $this->db->select('claveaut')->where('ID_administrador',$ID_admin)->get('seguridad_validacion');
@@ -112,6 +132,43 @@ class Login_model extends CI_Model{
 			}
 			return false;
 		}
+		/*function new_service_year(){
+			if(date("m") == 09 || date("m") == 10 || date("m") == 11 || date("m") == 12){
+				$yearfinhis= date("y")+1;
+			}else{
+				$yearfinhis= date("y");
+			}
+			if(date("m") == 09 || date("m") == 10 || date("m") == 11 || date("m") == 12){
+				$year = date("y")."-".date("y")+1;
+			}else{
+				$year = date("y")-1."-".date("y");
+			}
+			$array_service_year=[
+				"ID_congregacion" => $this->session->userdata['id_congregacion'],
+				"year"        	  => $year,
+				"fecha_cierre"    => $yearfinhis."-08-31",
+				"activo"          => 1
+			];
+		$this->db->insert('service_year',$array_service_year);
+		$id_service_year = $this->db->select("ID")->order_by('ID desc')->limit(1)->get('service_year');
+		$id_service_year = $id_service_year->row_array();
+		$territorios = $this->db->select('ID')->where("ID_congregacion",$this->session->userdata['id_congregacion'])->get("territorios");
+		$numero = $territorios->num_rows();
+
+		$array_datos=[
+			"id_service_year" => $id_service_year['ID'],
+			"numero_territorios" => $numero,
+			"territorios_predicados" => 0
+		];
+		$this->db->insert('datos_service_year',$array_datos);
+		$territoriosinsert = $territorios->result_array();
+		foreach ($territoriosinsert as $terrid) {
+			$this->db->insert('control_service_year',[ "id_service_year"   => $id_service_year['ID'],
+		                                                       "ID_territorio" => $terrid["ID"],
+		                                                       " predicado"    => 0
+		                                                     ]);
+		}
+		}*/
 
 }
 

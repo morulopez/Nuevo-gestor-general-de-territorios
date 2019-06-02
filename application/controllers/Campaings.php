@@ -44,4 +44,10 @@ class Campaings extends CI_Controller {
 			echo json_encode($data);
 		}
 	}
+	function activar_campaing(){
+		if(!empty($this->input->post('id'))){
+			$data = $this->Campaings_model->activar_campaing($this->input->post('id'));
+			echo json_encode($data);
+		}
+	}
 }

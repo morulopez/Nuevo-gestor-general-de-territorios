@@ -114,5 +114,23 @@ class Myphpmailer {
 		}
 
 	}
+	function mail_suport($data){
+		$mail = new PHPMailer(true);
 
+		try {
+		    $mail->SMTPDebug = 2;                                                                       
+		    $mail->Host      = 'localhost'; 
+		    $mail->setFrom($data->mail);
+		    $mail->addAddress('jesuslopezprogramador@gmail.com');
+		    $mail->isHTML(true);
+		    $mail->Subject   = $data->asunt;
+		    $mail->Body      = $data->mensaje;
+		    $mail->AltBody   = $data->mensaje;
+		    $mail->send();
+		    return true;
+		}catch (Exception $e) {
+		    echo false;
+		}
+	}
 }
+

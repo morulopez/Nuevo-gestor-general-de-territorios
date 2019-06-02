@@ -12,10 +12,21 @@ if($this->uri->segment(2)<1){
 	ReqDatos.req_publicadores();
 </script>
 
-<div class="col-md-3">
+<div class="col-md-2">
 	<nav class="navbar navbar-light">
 		<div class="divagregar divagregartop"><i class="fas fa-user-tie"></i><a href="#modal_add_publicadores"><span class="divagregartopancor">Agregar publicador</span></a></div>
 	</nav>
+</div>
+<div class="col-md-6">
+	<nav class="navbar  navegador">
+		<form class="form-inline" style="width:100%;">
+			<input class="form-control mr-sm-2" style="width:80%;" onkeyup="ReqDatos.filtrar_publicador()"type="search" placeholder="Buscar publicador" id="filterpubli" aria-label="Search">
+		</form>
+	</nav>
+</div>
+<div class="col-md-6">
+	<div id="searchpubli" class="animation">
+	</div>
 </div>
 <div id="modal_add_publicadores" class="modal_add_publicadores">
 	<div class="content_modal">

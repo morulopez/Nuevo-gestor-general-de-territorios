@@ -84,16 +84,27 @@ FOREIGN KEY (ID_territorio) REFERENCES territorios(ID) ON DELETE CASCADE
 );
 
 CREATE TABLE service_year(
-ID 					INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID 					INT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ID_congregacion 	INT(10) NOT NULL,
-comienzo 			VARCHAR(10) NOT NULL,
-fin 				VARCHAR(10) NOT NULL,
+year            	VARCHAR(20) NOT NULL,
+fecha_cierre        VARCHAR(20) NOT NULL,
 activo 				TINYINT(1) NOT NULL DEFAULT '1',
-numero_territorios 	VARCHAR(10),
-territorios_predicados VARCHAR(10),
 FOREIGN KEY (ID_congregacion) REFERENCES congregaciones(ID) ON DELETE CASCADE
 );
-
+CREATE TABLE datos_service_year(
+ID 					INT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_service_year 		INT(10) NOT NULL,
+numero_territorios 	VARCHAR(10),
+territorios_predicados VARCHAR(10),
+FOREIGN KEY (ID_service_year) REFERENCES service_year(ID) ON DELETE CASCADE
+);
+CREATE TABLE control_service_year(
+ID            INT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_service_year  INT(10) NOT NULL,
+ID_territorio INT(20) NOT NULL,
+predicado     TINYINT(1) NOT NULL DEFAULT '0',
+FOREIGN KEY (ID_service_year) REFERENCES service_year(ID) ON DELETE CASCADE
+);
 CREATE TABLE campaing(
 ID 					INT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ID_congregacion 	INT(10) NOT NULL,
@@ -119,4 +130,27 @@ ID_territorio INT(20) NOT NULL,
 predicado     TINYINT(1) NOT NULL DEFAULT '0',
 FOREIGN KEY (ID_campaing) REFERENCES campaing(ID) ON DELETE CASCADE
 );
+
+DELIMITER //
+
+CREATE PROCEDURE devuelta_terri_campaing(id_campaing INT, id_territorio INT)
+BEGIN
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+	END;
+
+	START TRANSACTION; 
+
+	UPDATE territorios SET ID_publicador_campaing = NULL, asignado_campaing = 0,devuelta_campaing = NOW() WHERE ID = id_territorio;
+	UPDATE datos_campaing SET territorios_predicados = territorios_predicados+1 WHERE ID_campaing = id_campaing;
+	UPDATE control_territorios_campaing SET predicado = 1 WHERE ID_campaing = id_campaing AND ID_territorio = id_territorio;
+
+	COMMIT;
+
+END//
+
+DELIMITER ;	
+
 

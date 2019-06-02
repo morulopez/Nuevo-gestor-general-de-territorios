@@ -257,6 +257,9 @@ class territorios{
                 title: 'Actualizado correctamente'
               })
               this.req_info_terri(id);
+              document.getElementById('listdatapubli').innerHTML='';
+              document.getElementById('paginationpubli').innerHTML='';
+              this.req_territorios();
             }
           })
         })
@@ -283,6 +286,32 @@ class territorios{
           Toast.fire({
             type: 'success',
             title: 'Observacion borrada correctamente'
+          })
+          this.req_info_terri(id_terri);
+        }
+      });
+    })
+  }
+  borrarObservacionhistorial(id_terri,id){
+    fetch(`${this.url}/Territorios/borrarObservacionhistorial`,{
+      method:"POST",
+      body:`id=${id}`,
+      headers:{
+        'Content-Type':'application/x-www-form-urlencoded'
+      }
+    }).then(res =>{
+      res.json().then( respuesta =>{
+        console.log(respuesta);
+        if(respuesta){
+           const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+          Toast.fire({
+            type: 'success',
+            title: 'Observacion de historial borrada correctamente'
           })
           this.req_info_terri(id_terri);
         }
@@ -396,5 +425,53 @@ class territorios{
       })
     }
   }
-
+  /**ESTA FUNCION SE LLAMA DESDE TERRITORIOS.PHP Y CON ELLA FILTRMOS LOS TERRITORIOS SEGUN NUMERO Y ZONA**/
+  filtrar_territorio(){
+    if(document.getElementById('filterterri').value==''){
+      return document.getElementById('searchterri').style.display="none";
+    }
+    var value = document.getElementById('filterterri').value;
+    var array = value.split(" ");
+    const obj = {};
+    if(array[0]){
+      obj['numero'] = array[1];
+    }
+    if(array[0]){
+      obj['zona'] = array[0];
+    }
+     if(array[2]){
+      obj['zona'] = array[1]+" "+array[2];
+    }
+    fetch(`${this.url}/Territorios/filtrar_terri`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        'Accept':'application/JSON',
+        'Content-Type':'application/x-www-form-urlencoded'  
+      }
+    }).then(res=>{
+      res.json().then(data=>{
+        document.getElementById('searchterri').innerHTML="";
+        document.getElementById('searchterri').style.display="block";
+        var asig_campaing   ='';
+        var asig            ='';
+        for(var key in data){
+          
+          if(data[key].asignado!=false){
+            asig ='<i class="fas fa-circle asignado"></i>';
+          }
+          if(data[key].asignado_campaing!=false){
+            asig_campaing ='<i class="fab fa-cuttlefish asignadocampaña"></i>';
+          }
+            document.getElementById('searchterri').innerHTML+=`<div class="row linea" id="primerdiv">
+            <div class="col-md-4">${data[key].numero_territorio}</div>
+            <div class="col-md-4">${data[key].zona} ${asig}${asig_campaing}</div>
+            <div class="col-md-4"><a href="#modal_info_territorios"><button type="button" onclick="ReqDatosTerri.req_info_terri('${data[key].id}');" class="btn btn-outline-info botonver"><i class="fas fa-eye"></i>Ver territorio</button></a></div>
+           </div>`;
+           asig_campaing   ='';
+           asig            ='';
+        }
+      })
+    })
+  }
 }
